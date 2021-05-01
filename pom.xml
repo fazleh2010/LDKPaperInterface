@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>my.org</groupId>
-    <artifactId>ontology-lexicalization</artifactId>
+    <artifactId>LDKPaperInterface</artifactId>
     <version>1.8</version>
 
-    <name>ontology-lexicalization</name>
+    <name>LDKPaperInterface</name>
     <description>A ontology-lexicalization system</description>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
@@ -170,7 +170,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>citec.correlation.wikipedia.main.WebInterface</mainClass>
+                            <mainClass>main.Interface</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

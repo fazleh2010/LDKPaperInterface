@@ -21,12 +21,12 @@ import java.util.logging.Logger;
  *
  * @author elahi
  */
-public class WebInterfaceMain {
+public class Interface {
 
     public static String qald9Dir = "/home/elahi/new/RecentOntoLexShort/src/main/resources/qald9/data/";
 
     public static void main(String str[]) throws Exception {
-        Logger LOGGER = Logger.getLogger(WebInterfaceMain.class.getName());
+        Logger LOGGER = Logger.getLogger(Interface.class.getName());
         String prediction = "predict_po_for_s_given_localized_l", lexicalElement = "russian", parts_of_speech = "JJ";
         String outputDir = qald9Dir + "/" + prediction + "/" + "dic/";
 
