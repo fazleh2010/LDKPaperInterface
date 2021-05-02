@@ -12,8 +12,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -44,15 +46,70 @@ public class Interface {
             if (lexicalElement != null) {
                 lexicalElement = lexicalElement.toLowerCase().replace(" ", "_").strip();
                 //parts_of_speech=lexicalPos.get(lexicalElement);
-                stringAdd = resultStr(outputDir, "A_" + lexicalElement, lexicalElement, parts_of_speech);
+                stringAdd = resultStr(outputDir, "A_" + lexicalElement, lexicalElement, parts_of_speech,prediction);
                 System.out.println(stringAdd);
             }
 
         }
 
     }
+    
+    public static String resultStr(String outputDir, String fileName, String lexicalElement, String parts_of_speech,String prediction) throws Exception {
+        Boolean flag = false;
+        String content = "";
+        List<File> files = getSpecificFiles(outputDir, fileName);
+        Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
 
-    public static String resultStr(String outputDir, String prediction, String lexicalElement, String parts_of_speech) throws Exception {
+        for (File file : files) {
+            String stringAdd = "";
+            Map<String, List<String>> lexiconDic = fileToHash(file, lexicalElement, parts_of_speech);
+            for (String key : lexiconDic.keySet()) {
+                flag = true;
+                List<String> LineInfos = lexiconDic.get(key);
+                for (String lineinfo : LineInfos) {
+                    String doubleValue = lineinfo.split(",")[2];
+                    doubleValue = doubleValue.replace("\"", "");
+                    Double value = Double.parseDouble(doubleValue);
+                    Set<String> tempList = new HashSet<String>();
+                    if (sortedLines.containsKey(value)) {
+                        tempList = sortedLines.get(value);
+                        tempList.add(lineinfo);
+                        sortedLines.put(value, tempList);
+                    } else {
+                        tempList.add(lineinfo);
+                        sortedLines.put(value, tempList);
+                    }
+                }
+            }
+        }
+        
+        String stringAdd="";
+        // System.out.println("sortedLines:"+sortedLines.keySet());
+           List<Double> keyValues = new ArrayList<Double>(sortedLines.keySet());
+            Collections.sort(keyValues, Collections.reverseOrder());
+            Integer index = 0;
+            for (Double value : keyValues) {
+                index = index + 1;
+                Set<String> stringList = sortedLines.get(value);
+                for (String string: stringList) {
+                    string = modifyLine(string, parts_of_speech,prediction);
+                    //System.out.println("value:"+value);
+                    String line = string + "\n";
+                    //System.out.println(string);
+                    stringAdd += line;
+                   
+                }
+            }
+        
+        if (flag) {
+            return stringAdd;
+        } else {
+            return "No answer found";
+        }
+
+    }
+
+    /*public static String resultStr(String outputDir, String prediction, String lexicalElement, String parts_of_speech) throws Exception {
         Boolean flag = false;
         String content = "";
         List<File> files = getSpecificFiles(outputDir, prediction);
@@ -99,9 +156,9 @@ public class Interface {
             return "No answer found";
         }
 
-    }
+    }*/
 
-    private static String modifyLine(String line, String part_of_speech) {
+    private static String modifyLine(String line, String part_of_speech,String prediction) {
         String rankLine = line;
         if (line.contains(",")) {
             String[] info = line.split(",");
@@ -112,7 +169,7 @@ public class Interface {
             for (String value : list) {
                 rankLine += value + "+";
             }
-            rankLine += part_of_speech;
+            rankLine += part_of_speech+ "+"+prediction;
             //System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
 
@@ -295,7 +352,7 @@ public class Interface {
                             }
                             className = line.split(",")[4];
                             //String doubleValue= line.split(",")[2];
-                            //System.out.println(index+" "+doubleValue+" "+line+"");
+                            //System.out.println(index+" "+className+" "+line+"");
                             index = index + 1;
                             //LineInfo lineInfo=new LineInfo(line,doubleValue);
 
