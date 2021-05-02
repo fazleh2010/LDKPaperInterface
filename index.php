@@ -52,6 +52,7 @@
     <th>SupA</th>
     <th>SupB</th>
     <th>PosTag</th>
+    <th>rule</th>
   </tr>
 
         
@@ -77,11 +78,11 @@
         $dir ="/home/elahi/new/LDKPaperInterface/";
         $jarFile ="target/LDKPaperInterface-1.8.jar";
         $rule ="predict_po_for_s_given_localized_l";
-        $className ="Politician";
+        $sort ="local";
         //$givenToken ="australian";
         $tokenStr ="\"".$givenToken."\"";
         $space =" ";
-        $command =$javaCommand.$space.$dir.$jarFile.$space.$rule.$space.$tokenStr;
+        $command =$javaCommand.$space.$dir.$jarFile.$space.$rule.$space.$tokenStr.$space.$sort;
         $textt = shell_exec($command);
         //echo $textt;
         //echo str_replace("$","\n",$textt);
@@ -96,7 +97,7 @@
 
         foreach ($myArray as $value) {
 		//list($ques, $ans) = array_pad(explode("+", $value), 2, null);
-             list($kb, $class,$interestingness,$condAB,$condBA,$supA,$supB,$PosTag) = array_pad(explode("+", $value), 8, null);
+             list($kb, $class,$interestingness,$condAB,$condBA,$supA,$supB,$PosTag,$rule) = array_pad(explode("+", $value), 8, null);
             $questions[$x] = $ques;
 	    $answers[$x] = $ans;
             echo "<tr>";
@@ -108,6 +109,7 @@
 	    echo "<td> $supA</td>";
 	    echo "<td> $supB</td>";
 	    echo "<td> $PosTag</td>";
+	    echo "<td> $rule</td>";
 	    echo "</tr>";
             //echo $ques.'  '.$ans.'  '.$x.'<br/>'; 
             $x++;
