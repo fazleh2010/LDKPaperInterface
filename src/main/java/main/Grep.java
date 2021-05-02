@@ -36,25 +36,7 @@ public class Grep {
    // public static String filename = "JJ-rules-predict_po_for_s_given_localized_l-AcademicJournal-100-10000-10-4-5-5-100-5-5-5.csv";
     public static String filename = "JJ-*.csv";
    
-    
-    public static String whenGrepWithSimpleString_thenCorrect(String outputDir, String lexicalElement) {
-        List<Line> mainlines = new ArrayList<Line>();
-        String str = "";
-        String[] files = new File(outputDir).list();
-        for (String fileName : files) {
-            File file = new File(outputDir + fileName);
-            List<Line> lines = Unix4j.grep(lexicalElement, file).toLineList();
-            mainlines.addAll(lines);
-        }
-        for (Line line : mainlines) {
-            System.out.println(line);
-            str += line.getContent();
-        }
-          System.out.println("!!!!!!!!!!!!!!!!!!!!!!! END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //String fileName="A_"+lexicalElement+".csv";
-        //StringToFile(str, outputDir+fileName);
-        return str;
-    }
+
     
     public static void StringToFile(String content, String path) {
         try {

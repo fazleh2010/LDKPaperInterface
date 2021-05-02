@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
+import static main.Grep.filename;
 
 /**
  *
@@ -34,16 +36,10 @@ public class Interface {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
         String prediction = "predict_po_for_s_given_localized_l", lexicalElement = "russian", parts_of_speech = "JJ";
         String outputDir = qald9Dir + "/" + prediction + "/" + "dic/";
-
         String stringAdd = "Test";
         Boolean flag = false;
-        /*Map<String,String> lexicalPos=new TreeMap<String, String>();
-        lexicalPos.put("russian", "JJ");*/
-        
-         stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech,prediction);
-        
-
-       /* prediction = str[0];
+         
+        prediction = str[0];
         lexicalElement = str[1];
         if (str.length < 2) {
             throw new Exception("less number of argument!!!");
@@ -51,30 +47,108 @@ public class Interface {
         {
             if (lexicalElement != null) {
                 lexicalElement = lexicalElement.toLowerCase().replace(" ", "_").strip();
-                //parts_of_speech=lexicalPos.get(lexicalElement);
-                //Grep.whenGrepWithSimpleString_thenCorrect(outputDir+fileName,lexicalElement);
-                //stringAdd = resultStr(outputDir, "A_" + lexicalElement, lexicalElement, parts_of_speech,prediction);
-                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech,prediction);
-
+                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction);
                 System.out.println(stringAdd);
             }
 
-        }*/
+        }
 
     }
     
     public static String resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction) throws Exception {
         Boolean flag = false;
         String content = "";
-       
-        String str=Grep.whenGrepWithSimpleString_thenCorrect(outputDir, lexicalElement);
-        System.out.println(str);
+        Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
+        lexicalElement = " \"" + lexicalElement + "\" ";
+        Map<String, List<String>> lexiconDic = fileToHash(outputDir, lexicalElement, parts_of_speech);
+        
+        
+        for (String key : lexiconDic.keySet()) {
+            flag = true;
+            List<String> LineInfos = lexiconDic.get(key);
+            for (String lineinfo : LineInfos) {
+                String doubleValue = lineinfo.split(",")[2];
+                doubleValue = doubleValue.replace("\"", "");
+                Double value = Double.parseDouble(doubleValue);
+                Set<String> tempList = new HashSet<String>();
+                if (sortedLines.containsKey(value)) {
+                    tempList = sortedLines.get(value);
+                    tempList.add(lineinfo);
+                    sortedLines.put(value, tempList);
+                } else {
+                    tempList.add(lineinfo);
+                    sortedLines.put(value, tempList);
+                }
+            }
+        }
 
+        content = "";
+        // System.out.println("sortedLines:"+sortedLines.keySet());
+        List<Double> keyValues = new ArrayList<Double>(sortedLines.keySet());
+        Collections.sort(keyValues, Collections.reverseOrder());
+        Integer index = 0;
+        for (Double value : keyValues) {
+            index = index + 1;
+            Set<String> stringList = sortedLines.get(value);
+            for (String string : stringList) {
+                string = modifyLine(string, parts_of_speech, prediction);
+                //System.out.println("value:"+value);
+                String line = string + "\n";
+                //System.out.println(string);
+                content += line;
 
+            }
+        }
+
+        if (flag) {
+            return content;
+        }
+        return "No answer found";
+
+    }
+    
+     private static Map<String, List<String>> fileToHash(String outputDir, String lexicalElement, String part_of_speech) throws FileNotFoundException, IOException {
+        Map<String, List<String>> classNameLines = new TreeMap<String, List<String>>();
+        Process process = null; String className = null,line=null;
+        File folder = new File(outputDir);
+        String[] listOfFiles = folder.list();
+        
+        try {
+            for (String fileName : listOfFiles) {
+                fileName=outputDir+fileName;
+                String command = "grep -w " + lexicalElement + " " + fileName;
+                //System.out.println("command:"+command);
+                process = Runtime.getRuntime().exec(command);
+                List<String> lines = new ArrayList<String>();
+                BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    if (line.contains("XMLSchema#integer")) {
+                        continue;
+                    }
+                    className = line.split(",")[4];
+                    lines.add(line);
+                }
+                classNameLines.put(className, lines);
+            }
+
+            process.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return classNameLines;
+    }
+
+    
+    /*public static String resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction) throws Exception {
+        Boolean flag = false;
+        String content = "";
+      
         //List<File> files = getSpecificFiles(outputDir, fileName);
 
 
-        /*List<File> files = getSpecificFiles(outputDir, fileName);
+        List<File> files = getSpecificFiles(outputDir, fileName);
         Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
 
         for (File file : files) {
@@ -120,10 +194,15 @@ public class Interface {
         
         if (flag) {
             return stringAdd;
-        } */
+        } 
         return "No answer found";
 
-    }
+    }*/
+    
+    
+    
+    
+    
 
     /*public static String resultStr(String outputDir, String prediction, String lexicalElement, String parts_of_speech) throws Exception {
         Boolean flag = false;
@@ -349,7 +428,8 @@ public class Interface {
         }
         return hash;
     }*/
-    private static Map<String, List<String>> fileToHash(File fileName, String lexicalElement, String part_of_speech) throws FileNotFoundException, IOException {
+    
+    /*private static Map<String, List<String>> fileToHash(File fileName, String lexicalElement, String part_of_speech) throws FileNotFoundException, IOException {
         Map<String, List<String>> hash = new TreeMap<String, List<String>>();
         BufferedReader reader;
         String line = "";
@@ -396,8 +476,10 @@ public class Interface {
             e.printStackTrace();
         }
         return hash;
-    }
+    }*/
 
+    
+   
     private static String getValue(String string) {
         string = string.replace("\"", "");
 
@@ -426,5 +508,7 @@ public class Interface {
         }
         return arrayList;
     }
+    
+      //lexicalElement = " \"" + lexicalElement + "\" ";
 
 }
