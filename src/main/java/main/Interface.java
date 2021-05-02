@@ -25,7 +25,10 @@ import java.util.logging.Logger;
  */
 public class Interface {
 
-    public static String qald9Dir = "/home/elahi/new/RecentOntoLexShort/src/main/resources/qald9/data/";
+    public static String qald9Dir = "/home/elahi/new/LDKPaperInterface/src/main/resources/qald9/data/";
+    public static String predict_po_for_s_given_localized_l = "predict_po_for_s_given_localized_l/";
+    public static String filename = "JJ-rules-predict_po_for_s_given_localized_l-AcademicJournal-100-10000-10-4-5-5-100-5-5-5.csv";
+     
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
@@ -36,8 +39,11 @@ public class Interface {
         Boolean flag = false;
         /*Map<String,String> lexicalPos=new TreeMap<String, String>();
         lexicalPos.put("russian", "JJ");*/
+        
+         stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech,prediction);
+        
 
-        prediction = str[0];
+       /* prediction = str[0];
         lexicalElement = str[1];
         if (str.length < 2) {
             throw new Exception("less number of argument!!!");
@@ -46,18 +52,29 @@ public class Interface {
             if (lexicalElement != null) {
                 lexicalElement = lexicalElement.toLowerCase().replace(" ", "_").strip();
                 //parts_of_speech=lexicalPos.get(lexicalElement);
-                stringAdd = resultStr(outputDir, "A_" + lexicalElement, lexicalElement, parts_of_speech,prediction);
+                //Grep.whenGrepWithSimpleString_thenCorrect(outputDir+fileName,lexicalElement);
+                //stringAdd = resultStr(outputDir, "A_" + lexicalElement, lexicalElement, parts_of_speech,prediction);
+                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech,prediction);
+
                 System.out.println(stringAdd);
             }
 
-        }
+        }*/
 
     }
     
-    public static String resultStr(String outputDir, String fileName, String lexicalElement, String parts_of_speech,String prediction) throws Exception {
+    public static String resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction) throws Exception {
         Boolean flag = false;
         String content = "";
-        List<File> files = getSpecificFiles(outputDir, fileName);
+       
+        String str=Grep.whenGrepWithSimpleString_thenCorrect(outputDir, lexicalElement);
+        System.out.println(str);
+
+
+        //List<File> files = getSpecificFiles(outputDir, fileName);
+
+
+        /*List<File> files = getSpecificFiles(outputDir, fileName);
         Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
 
         for (File file : files) {
@@ -103,9 +120,8 @@ public class Interface {
         
         if (flag) {
             return stringAdd;
-        } else {
-            return "No answer found";
-        }
+        } */
+        return "No answer found";
 
     }
 
@@ -286,6 +302,8 @@ public class Interface {
 
         return selectedFiles;
     }
+    
+   
 
     /*private static Map<String, List<String>> fileToHash(File fileName,String part_of_speech) throws FileNotFoundException, IOException {
         Map<String, List<String>> hash = new TreeMap<String, List<String>>();
