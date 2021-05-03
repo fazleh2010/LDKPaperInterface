@@ -28,13 +28,11 @@ import static main.Grep.filename;
 public class Interface {
 
     public static String outputDir = "/home/elahi/new/LDKPaperInterface/src/main/resources/data/";
-    //public static String predict_po_for_s_given_localized_l = "predict_po_for_s_given_localized_l/";
-    //public static String filename = "JJ-rules-predict_po_for_s_given_localized_l-AcademicJournal-100-10000-10-4-5-5-100-5-5-5.csv";
      
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = null, interestingness=null,lexicalElement = null, parts_of_speech = null;
+        String prediction = null, interestingness=null,lexicalElement = null, parts_of_speech = "JJ";
         String stringAdd = "";
         Boolean flag = false;
          
@@ -49,7 +47,7 @@ public class Interface {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
                 stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
-                System.out.println(stringAdd);
+               // System.out.println(stringAdd);
             }
 
         }
@@ -85,7 +83,6 @@ public class Interface {
         }
 
         content = "";
-        // System.out.println("sortedLines:"+sortedLines.keySet());
         List<Double> keyValues = new ArrayList<Double>(sortedLines.keySet());
         Collections.sort(keyValues, Collections.reverseOrder());
         Integer index = 0;
@@ -94,9 +91,7 @@ public class Interface {
             Set<String> stringList = sortedLines.get(value);
             for (String string : stringList) {
                 string = modifyLine(string, parts_of_speech, prediction);
-                //System.out.println("value:"+value);
                 String line = string + "\n";
-                //System.out.println(string);
                 content += line;
 
             }
@@ -155,7 +150,7 @@ public class Interface {
                 rankLine += value + "+";
             }
             rankLine += part_of_speech+ "+"+prediction;
-            //System.out.println(rankLine);
+            System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
 
         }
