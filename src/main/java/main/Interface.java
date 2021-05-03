@@ -27,27 +27,28 @@ import static main.Grep.filename;
  */
 public class Interface {
 
-    public static String qald9Dir = "/home/elahi/new/LDKPaperInterface/src/main/resources/qald9/data/";
-    public static String predict_po_for_s_given_localized_l = "predict_po_for_s_given_localized_l/";
-    public static String filename = "JJ-rules-predict_po_for_s_given_localized_l-AcademicJournal-100-10000-10-4-5-5-100-5-5-5.csv";
+    public static String outputDir = "/home/elahi/new/LDKPaperInterface/src/main/resources/data/";
+    //public static String predict_po_for_s_given_localized_l = "predict_po_for_s_given_localized_l/";
+    //public static String filename = "JJ-rules-predict_po_for_s_given_localized_l-AcademicJournal-100-10000-10-4-5-5-100-5-5-5.csv";
      
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "predict_po_for_s_given_localized_l", lexicalElement = "russian", parts_of_speech = "JJ";
-        String outputDir = qald9Dir + "/" + prediction + "/" + "dic/";
-        String stringAdd = "Test";
+        String prediction = null, interestingness=null,lexicalElement = null, parts_of_speech = null;
+        String stringAdd = "";
         Boolean flag = false;
          
         prediction = str[0];
-        lexicalElement = str[1];
-        if (str.length < 2) {
+        interestingness = str[1];
+        lexicalElement = str[2];
+      
+        if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else //lexicalElement="russian";
-        {
+        {   
+            lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
-                lexicalElement = lexicalElement.toLowerCase().replace(" ", "_").strip();
-                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction);
+                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
                 System.out.println(stringAdd);
             }
 
@@ -55,12 +56,13 @@ public class Interface {
 
     }
     
-    public static String resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction) throws Exception {
+    public static String resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction,String interestingness) throws Exception {
         Boolean flag = false;
         String content = "";
+        lexicalElement = lexicalElement.toLowerCase().strip();
+
         Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
-        lexicalElement = " \"" + lexicalElement + "\" ";
-        Map<String, List<String>> lexiconDic = fileToHash(outputDir, lexicalElement, parts_of_speech);
+        Map<String, List<String>> lexiconDic = fileToHash(outputDir, lexicalElement, parts_of_speech,interestingness,prediction);
         
         
         for (String key : lexiconDic.keySet()) {
@@ -107,17 +109,18 @@ public class Interface {
 
     }
     
-     private static Map<String, List<String>> fileToHash(String outputDir, String lexicalElement, String part_of_speech) throws FileNotFoundException, IOException {
+     private static Map<String, List<String>> fileToHash(String outputDir, String lexicalElement, String part_of_speech,String interestingness,String prediction) throws FileNotFoundException, IOException {
         Map<String, List<String>> classNameLines = new TreeMap<String, List<String>>();
         Process process = null; String className = null,line=null;
         File folder = new File(outputDir);
-        String[] listOfFiles = folder.list();
+        //String[] listOfFiles = folder.list();
+        
+        List<String> listOfFiles=getSpecificFiles(outputDir,prediction,interestingness);
         
         try {
             for (String fileName : listOfFiles) {
                 fileName=outputDir+fileName;
                 String command = "grep -w " + lexicalElement + " " + fileName;
-                //System.out.println("command:"+command);
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
                 BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -159,13 +162,13 @@ public class Interface {
         return rankLine;
     }
 
-    private static List<File> getSpecificFiles(String fileDir, String extension) {
-        List<File> selectedFiles = new ArrayList<File>();
+    private static List<String> getSpecificFiles(String fileDir, String prediction,String extension) {
+        List<String> selectedFiles = new ArrayList<String>();
         try {
             String[] files = new File(fileDir).list();
             for (String fileName : files) {
-                if (fileName.contains(extension)) {
-                    selectedFiles.add(new File(fileDir + fileName));
+                if (fileName.contains(extension)&&fileName.contains(prediction)) {
+                    selectedFiles.add(fileName);
                 }
             }
 
@@ -176,7 +179,7 @@ public class Interface {
 
         return selectedFiles;
     }
-   
+
     private static String getValue(String string) {
         string = string.replace("\"", "");
 
