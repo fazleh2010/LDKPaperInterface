@@ -6,7 +6,7 @@
 
     <groupId>my.org</groupId>
     <artifactId>LDKPaperInterface</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
 
     <name>LDKPaperInterface</name>
     <description>A ontology-lexicalization system</description>
