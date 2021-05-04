@@ -27,8 +27,9 @@ import static main.Grep.filename;
  */
 public class Interface {
 
-    public static String outputDir = "/home/elahi/new/LDKPaperInterface/src/main/resources/data/";
-     
+    //public static String outputDir = "/home/elahi/new/LDKPaperInterface/src/main/resources/data/";
+    public static String outputDir = "src/main/resources/data/";
+
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
