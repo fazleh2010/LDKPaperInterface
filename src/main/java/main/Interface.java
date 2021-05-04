@@ -28,7 +28,7 @@ import static main.Grep.filename;
 public class Interface {
 
     //public static String outputDir = "/home/elahi/new/LDKPaperInterface/src/main/resources/data/";
-    public static String outputDir = "src/main/resources/data/";
+    public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
 
 
     public static void main(String str[]) throws Exception {
@@ -117,6 +117,7 @@ public class Interface {
         try {
             for (String fileName : listOfFiles) {
                 fileName=outputDir+fileName;
+                System.out.println("fileName:"+fileName);
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
