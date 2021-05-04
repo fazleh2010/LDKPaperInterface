@@ -40,7 +40,7 @@ public class Interface {
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
-        System.out.println(prediction+" "+interestingness+" "+lexicalElement);
+        //System.out.println(prediction+" "+interestingness+" "+lexicalElement);
       
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
@@ -48,8 +48,8 @@ public class Interface {
         {   
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
-                //stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
-               // System.out.println(stringAdd);
+                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
+                System.out.println(stringAdd);
             }
 
         }
