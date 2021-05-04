@@ -117,7 +117,6 @@ public class Interface {
         try {
             for (String fileName : listOfFiles) {
                 fileName=outputDir+fileName;
-                System.out.println("fileName:"+fileName);
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
@@ -153,7 +152,7 @@ public class Interface {
                 rankLine += value + "+";
             }
             rankLine += part_of_speech+ "+"+prediction;
-            System.out.println(rankLine);
+            //System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
 
         }
