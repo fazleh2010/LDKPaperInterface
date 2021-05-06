@@ -27,8 +27,8 @@ import static main.Grep.filename;
  */
 public class Interface {
 
-    //public static String outputDir = "/home/elahi/new/LDKPaperInterface/src/main/resources/data/";
-    public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
+    public static String outputDir = "src/main/resources/data/";
+    //public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
 
 
     public static void main(String str[]) throws Exception {
@@ -47,6 +47,13 @@ public class Interface {
         } else //lexicalElement="russian";
         {   
             lexicalElement = " \"" + lexicalElement + "\" ";
+            if(prediction.contains("predict_po_for_s_given_localized_l"))
+                parts_of_speech = "JJ";
+            else if(prediction.contains("predict_p_for_o_given_localized_l"))
+                parts_of_speech = "VB";
+            else if(prediction.contains("predict_p_for_s_given_localized_l"))
+                parts_of_speech = "VB";
+                
             if (lexicalElement != null) {
                 stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
                 System.out.println(stringAdd);
