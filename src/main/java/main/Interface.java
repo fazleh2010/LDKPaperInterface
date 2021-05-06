@@ -40,20 +40,13 @@ public class Interface {
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
-        //System.out.println(prediction+" "+interestingness+" "+lexicalElement);
+        System.out.println(prediction+" "+interestingness+" "+lexicalElement);
       
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else //lexicalElement="russian";
         {   
             lexicalElement = " \"" + lexicalElement + "\" ";
-            if(prediction.contains("predict_po_for_s_given_localized_l"))
-                parts_of_speech = "JJ";
-            else if(prediction.contains("predict_p_for_o_given_localized_l"))
-                parts_of_speech = "VB";
-            else if(prediction.contains("predict_p_for_s_given_localized_l"))
-                parts_of_speech = "VB";
-                
             if (lexicalElement != null) {
                 stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
                 System.out.println(stringAdd);
@@ -118,8 +111,9 @@ public class Interface {
         Process process = null; String className = null,line=null;
         File folder = new File(outputDir);
         //String[] listOfFiles = folder.list();
-        
+        System.out.println(outputDir+" prediction:"+prediction+" interestingness:"+interestingness);
         List<String> listOfFiles=getSpecificFiles(outputDir,prediction,interestingness);
+       
         
         try {
             for (String fileName : listOfFiles) {
