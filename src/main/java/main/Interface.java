@@ -27,8 +27,8 @@ import static main.Grep.filename;
  */
 public class Interface {
 
-    public static String outputDir = "src/main/resources/data/";
-    //public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
+    //public static String outputDir = "src/main/resources/data/";
+    public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
 
 
     public static void main(String str[]) throws Exception {
