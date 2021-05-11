@@ -60,12 +60,14 @@ public class Interface {
                 Result result=new Result();
                 result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
                 List<String> rows = result.getRows();
-                System.out.println(result.getContent());
+                //System.out.println(result.getContent());
 
-                //System.out.println(stringAdd);
                 if (!rows.isEmpty()) {
                     stringAdd = createTable(rows,prediction,interestingness);
-                    FileUtils.stringToFiles(stringAdd, javaScriptDir + "table.js");
+                                    //System.out.println(stringAdd);
+
+                    flag=FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
+                    System.out.println("flile add status!!"+flag);
                 }
 
             }

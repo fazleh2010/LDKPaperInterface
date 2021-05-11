@@ -38,13 +38,16 @@ public class FileUtils {
         return selectedFiles;
     }
     
-     public static void stringToFiles(String str, String fileName) {
+     public static Boolean stringToFiles(String str, String fileName) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             writer.write(str);
             writer.close();
+            return true;
         } catch (IOException ex) {
+             System.out.println("file not found!!");
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
 
     }
