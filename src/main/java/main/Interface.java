@@ -32,7 +32,8 @@ public class Interface {
 
    //public static String outputDir = "../data/";
     public static String outputDir = "/var/www/html/ontologyLexicalization/data/";
-    public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
+    //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
+    public static String javaScriptDir = "/home/melahi/";
     //public static String javaScriptDir ="../";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
     public static String javaScriptFileName = "table.js";
