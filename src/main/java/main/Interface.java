@@ -62,7 +62,7 @@ public class Interface {
 
                 //System.out.println(stringAdd);
                 if (!rows.isEmpty()) {
-                    stringAdd = createTable(rows);
+                    stringAdd = createTable(rows,prediction,interestingness);
                     System.out.println(stringAdd);
                     stringToFiles(stringAdd, javaScriptDir + "table.js");
                 }
@@ -230,20 +230,21 @@ public class Interface {
         return arrayList;
     }
 
-    private static String createTable(List<String> rows) {
+    private static String createTable(List<String> rows, String prediction,String interestingness) {
+         String kbTitle=getKB(prediction); 
          String tableStr = "$(document).ready(function() {\n"
                 + "    $('#example').DataTable( {\n"
                 + "        data: dataSet,\n"
                 + "        columns: [\n"
-                + "            { title: \"1\" },\n"
-                + "            { title: \"2\" },\n"
-                + "            { title: \"3\" },\n"
-                + "            { title: \"4.\" },\n"
-                + "            { title: \"5\" },\n"
-                + "            { title: \"6\" },\n"
-                + "            { title: \"7\" },\n"
-                + "            { title: \"8\" },\n"
-                + "            { title: \"9\" }\n"
+                + "            { title: \""+kbTitle+"\" },\n"
+                + "            { title: \""+"Class"+"\" },\n"
+                + "            { title: \""+interestingness+"\" },\n"
+                + "            { title: \""+"condAB"+".\" },\n"
+                + "            { title: \""+"condBA"+"\" },\n"
+                + "            { title: \""+"supA"+"\" },\n"
+                + "            { title: \""+"supB"+"\" },\n"
+                + "            { title: \""+"PosTag"+"\" },\n"
+                + "            { title: \""+prediction+"\" }\n"
                 + "        ]\n"
                 + "    } );\n"
                 + "} );";
@@ -278,6 +279,12 @@ public class Interface {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private static String getKB(String prediction) {
+        if(prediction.contains(PredictionRules.predict_po_for_s_given_localized_l))
+            return "predicate object pair";
+        return "kb";
     }
 
 }
