@@ -6,9 +6,11 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import static main.Grep.filename;
 
@@ -29,18 +32,22 @@ public class Interface {
 
     //public static String outputDir = "src/main/resources/data/";
     public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
+    public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
+    public static String javaScriptFileName = "table.js";
 
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = null, interestingness=null,lexicalElement = null, parts_of_speech = "JJ";
+        String prediction = "predict_po_for_s_given_localized_l", interestingness=" ",lexicalElement = "bear", parts_of_speech = "VB";
         String stringAdd = "";
         Boolean flag = false;
          
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
-        System.out.println(prediction+" "+interestingness+" "+lexicalElement);
+        
+        
+        //System.out.println(prediction+" "+interestingness+" "+lexicalElement);
       
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
@@ -48,18 +55,22 @@ public class Interface {
         {   
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
-                stringAdd = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
-                System.out.println(stringAdd);
+                List<String> rows = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
+                //System.out.println(stringAdd);
+                  stringAdd=createTable(rows);
+                  stringToFiles(stringAdd,javaScriptDir+"table.js");
+                  
             }
 
         }
 
     }
     
-    public static String resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction,String interestingness) throws Exception {
+    public static List<String> resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction,String interestingness) throws Exception {
         Boolean flag = false;
         String content = "";
         lexicalElement = lexicalElement.toLowerCase().strip();
+        List<String> rows=new ArrayList<String>();
 
         Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
         Map<String, List<String>> lexiconDic = fileToHash(outputDir, lexicalElement, parts_of_speech,interestingness,prediction);
@@ -94,15 +105,16 @@ public class Interface {
             for (String string : stringList) {
                 string = modifyLine(string, parts_of_speech, prediction);
                 String line = string + "\n";
+                rows.add(string);
                 content += line;
 
             }
         }
 
         if (flag) {
-            return content;
+            return rows;
         }
-        return "No answer found";
+        return new ArrayList<String>();
 
     }
     
@@ -111,13 +123,14 @@ public class Interface {
         Process process = null; String className = null,line=null;
         File folder = new File(outputDir);
         //String[] listOfFiles = folder.list();
-        System.out.println(outputDir+" prediction:"+prediction+" interestingness:"+interestingness);
+        //System.out.println(outputDir+" prediction:"+prediction+" interestingness:"+interestingness);
         List<String> listOfFiles=getSpecificFiles(outputDir,prediction,interestingness);
        
         
         try {
             for (String fileName : listOfFiles) {
                 fileName=outputDir+fileName;
+                //System.out.println(fileName);
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
@@ -128,6 +141,7 @@ public class Interface {
                     }
                     className = line.split(",")[4];
                     lines.add(line);
+
                 }
                 classNameLines.put(className, lines);
             }
@@ -205,6 +219,56 @@ public class Interface {
             arrayList.add(key);
         }
         return arrayList;
+    }
+
+    private static String createTable(List<String> rows) {
+         String tableStr = "$(document).ready(function() {\n"
+                + "    $('#example').DataTable( {\n"
+                + "        data: dataSet,\n"
+                + "        columns: [\n"
+                + "            { title: \"1\" },\n"
+                + "            { title: \"2\" },\n"
+                + "            { title: \"3\" },\n"
+                + "            { title: \"4.\" },\n"
+                + "            { title: \"5\" },\n"
+                + "            { title: \"6\" },\n"
+                + "            { title: \"7\" },\n"
+                + "            { title: \"8\" },\n"
+                + "            { title: \"9\" }\n"
+                + "        ]\n"
+                + "    } );\n"
+                + "} );";
+        String start = "var dataSet = [";
+        String end = "];";
+        String str = "";
+        for (Integer index = 0; index < rows.size(); index++) {
+            String row = rows.get(index);
+            row = row.replace("+", "\"" + ", " + "\"");
+            String line = null;
+            if (index == (rows.size() - 1)) {
+                line = "[" + "\"" + row + "\"" + "]" + "\n";
+            } else {
+                line = "[" + "\"" + row + "\"" + "]," + "\n";
+            }
+
+            str += line;
+
+        }
+        str=start + str + end+"\n"+tableStr;
+        
+        return str;
+       
+    }
+    
+    public static void stringToFiles(String str, String fileName) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+            writer.write(str);
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
