@@ -54,23 +54,19 @@ public class Interface {
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else //lexicalElement="russian";*/
-        {   
+        {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
-                List<String> rows = resultStr(outputDir, lexicalElement, parts_of_speech, prediction,interestingness);
-                  stringAdd=createTable(rows);
-                  System.out.println("row size:"+rows.size());
-                  System.out.println(stringAdd);
+                List<String> rows = resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
+                System.out.println("row size:" + rows.size());
 
                 //System.out.println(stringAdd);
-		  if(rows.isEmpty()){
-                     return;
-                    }
+                if (!rows.isEmpty()) {
+                    stringAdd = createTable(rows);
+                    System.out.println(stringAdd);
+                    stringToFiles(stringAdd, javaScriptDir + "table.js");
+                }
 
-                  stringAdd=createTable(rows);
-		  System.out.println(stringAdd);
-                  stringToFiles(stringAdd,javaScriptDir+"table.js");
-                  
             }
 
         }
@@ -136,11 +132,14 @@ public class Interface {
         //String[] listOfFiles = folder.list();
         //System.out.println(outputDir+" prediction:"+prediction+" interestingness:"+interestingness);
         List<String> listOfFiles=getSpecificFiles(outputDir,prediction,interestingness);
+        if(listOfFiles.isEmpty())
+            return new TreeMap<String, List<String>>();
        
         
         try {
             for (String fileName : listOfFiles) {
                 fileName=outputDir+fileName;
+                System.out.println(fileName);
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
