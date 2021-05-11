@@ -33,7 +33,8 @@ public class Interface {
     //public static String outputDir = "src/main/resources/data/";
     public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
-    public static String javaScriptDir ="../";
+    //public static String javaScriptDir ="../";
+    public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
     public static String javaScriptFileName = "table.js";
 
 
@@ -60,6 +61,9 @@ public class Interface {
                   stringAdd=createTable(rows);
                   System.out.println("row size:"+rows.size());
                   System.out.println(stringAdd);
+
+                //System.out.println(stringAdd);
+                  stringAdd=createTable(rows);
                   stringToFiles(stringAdd,javaScriptDir+"table.js");
                   
             }
@@ -132,7 +136,6 @@ public class Interface {
         try {
             for (String fileName : listOfFiles) {
                 fileName=outputDir+fileName;
-                System.out.println(fileName);
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
