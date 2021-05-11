@@ -244,7 +244,7 @@ public class Interface {
                 + "            { title: \""+"supA"+"\" },\n"
                 + "            { title: \""+"supB"+"\" },\n"
                 + "            { title: \""+"PosTag"+"\" },\n"
-                + "            { title: \""+prediction+"\" }\n"
+                + "            { title: \""+"rule"+"\" }\n"
                 + "        ]\n"
                 + "    } );\n"
                 + "} );";
