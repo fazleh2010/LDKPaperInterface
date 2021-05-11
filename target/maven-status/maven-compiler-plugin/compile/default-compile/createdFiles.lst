@@ -1,6 +1,8 @@
 main/Interface.class
 main/PredictionRules.class
+main/Result.class
 main/Grep.class
 main/TextAnalyzer.class
-main/EvaluationTriple.class
 main/DirectoryLocation.class
+main/FileUtils.class
+main/EvaluationTriple.class
