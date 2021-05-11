@@ -30,10 +30,10 @@ import static main.Grep.filename;
  */
 public class Interface {
 
-    public static String outputDir = "../data/";
-    //public static String outputDir = "/var/www/html/ontologyLexicalization/LDKPaperInterface/src/main/resources/data/";
-    //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
-    public static String javaScriptDir ="../";
+   //public static String outputDir = "../data/";
+    public static String outputDir = "/var/www/html/ontologyLexicalization/data/";
+    public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
+    //public static String javaScriptDir ="../";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
     public static String javaScriptFileName = "table.js";
 
@@ -49,7 +49,7 @@ public class Interface {
         lexicalElement = str[2];
         
         
-        //System.out.println(prediction+" "+interestingness+" "+lexicalElement);
+        System.out.println(prediction+" "+interestingness+" "+lexicalElement);
       
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
@@ -63,7 +63,12 @@ public class Interface {
                   System.out.println(stringAdd);
 
                 //System.out.println(stringAdd);
+		  if(rows.isEmpty()){
+                     return;
+                    }
+
                   stringAdd=createTable(rows);
+		  System.out.println(stringAdd);
                   stringToFiles(stringAdd,javaScriptDir+"table.js");
                   
             }
