@@ -45,7 +45,7 @@ public class FileUtils {
             writer.close();
             return true;
         } catch (IOException ex) {
-             System.out.println("file not found!!");
+             System.out.println("file not found!!:"+fileName+" "+ex.getMessage());
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
