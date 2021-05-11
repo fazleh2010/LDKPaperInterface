@@ -58,7 +58,7 @@ public class Interface {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
                 List<String> rows = resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
-                System.out.println("row size:" + rows.size());
+                //System.out.println("row size:" + rows.size());
 
                 //System.out.println(stringAdd);
                 if (!rows.isEmpty()) {
