@@ -31,7 +31,7 @@ import static main.Grep.filename;
  */
 public class Interface {
 
-   //public static String outputDir = "../data/";
+    //public static String outputDir = "../data/";
     public static String outputDir = "/var/www/html/ontologyLexicalization/data/";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
     public static String javaScriptDir = "/home/melahi/";
@@ -53,10 +53,21 @@ public class Interface {
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
+        
+        
+         List<File> listOfFiles = FileUtils.getSpecificFiles(outputDir, prediction, interestingness,"z_",".txt");
+         
+         for(File file:listOfFiles){
+              System.out.println("fileName:"+file.getName());
+             if(file.getName().contains("JJ"))
+                 adjective = getList(file);
+             if(file.getName().contains("NN"))
+                 noun = getList(file);
+             if(file.getName().contains("VB"))
+                 verb = getList(file);
+         }
 
-        adjective = getList(outputDir+"z_" + "JJ" + "_" + prediction + "_" + interestingness + ".txt");
-        noun = getList(outputDir+"z_" + "NN" + "_" + prediction + "_" + interestingness + ".txt");
-        verb = getList(outputDir+"z_" + "VB" + "_" + prediction + "_" + interestingness + ".txt");
+
 
         parts_of_speech = findPosTag(lexicalElement);
 
@@ -148,7 +159,7 @@ public class Interface {
         }
     }
     
-    public static Set<String> getList(String fileName) throws FileNotFoundException, IOException {
+    public static Set<String> getList(File fileName) throws FileNotFoundException, IOException {
         Set<String> entities = new TreeSet<String>();
 
         BufferedReader reader;

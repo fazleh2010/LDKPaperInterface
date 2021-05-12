@@ -38,6 +38,24 @@ public class FileUtils {
         return selectedFiles;
     }
     
+     public static List<File> getSpecificFiles(String fileDir, String prediction, String inter,String posTag,String extension) {
+        List<File> selectedFiles = new ArrayList<File>();
+        try {
+            String[] files = new File(fileDir).list();
+            for (String fileName : files) {
+                if (fileName.contains(inter) && fileName.contains(prediction)&& fileName.contains(posTag)&& fileName.contains(extension)) {
+                    selectedFiles.add(new File(fileDir+fileName));
+                }
+            }
+
+        } catch (Exception exp) {
+            System.out.println("file not found!!");
+            return selectedFiles;
+        }
+
+        return selectedFiles;
+    }
+    
      public static Boolean stringToFiles(String str, String fileName) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
