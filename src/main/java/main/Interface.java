@@ -59,7 +59,7 @@ public class Interface {
             parts_of_speech=checkPosTag.getPosTag();
         }
         else{
-            System.out.println("NO");
+            System.out.println("0");
             return;
         }
 
