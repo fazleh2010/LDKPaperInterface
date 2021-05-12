@@ -41,7 +41,7 @@ public class Interface {
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "predict_po_for_s_given_localized_l", interestingness="Coherence",lexicalElement = "bear", parts_of_speech = "VB";
+        String prediction = "predict_po_for_s_given_localized_l", interestingness="Coherence",lexicalElement = "bear", parts_of_speech = "JJ";
         String stringAdd = "";
         Boolean flag = false;
          
