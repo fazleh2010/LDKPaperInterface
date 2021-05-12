@@ -67,9 +67,12 @@ public class Interface {
                  verb = getList(file);
          }
 
-
+                 System.out.println("adjective:"+adjective.toString());
+                   System.out.println("noun:"+noun.toString());
+                    System.out.println("verb:"+verb.toString());
 
         parts_of_speech = findPosTag(lexicalElement);
+        System.out.println(parts_of_speech);
 
         System.out.println(prediction+" "+interestingness+" "+lexicalElement+" "+parts_of_speech);
         
