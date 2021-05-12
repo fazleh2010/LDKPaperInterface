@@ -5,4 +5,5 @@ main/Grep.class
 main/TextAnalyzer.class
 main/DirectoryLocation.class
 main/FileUtils.class
+main/CheckPosTag.class
 main/EvaluationTriple.class

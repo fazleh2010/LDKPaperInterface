@@ -54,28 +54,26 @@ public class Interface {
         interestingness = str[1];
         lexicalElement = str[2];
         
+        CheckPosTag checkPosTag=new CheckPosTag(outputDir,prediction, interestingness, lexicalElement);
+        if(checkPosTag.getFound()){
+            parts_of_speech=checkPosTag.getPosTag();
+        }
+        else{
+            System.out.println("NO");
+            return;
+        }
+
+      
+
+        //System.out.println("adjective:" + adjective.toString());
+        //System.out.println("noun:" + noun.toString());
+        //System.out.println("verb:" + verb.toString());
         
-         List<File> listOfFiles = FileUtils.getSpecificFiles(outputDir, prediction, interestingness,"z_",".txt");
-         
-         for(File file:listOfFiles){
-              System.out.println("fileName:"+file.getName());
-             if(file.getName().contains("JJ"))
-                 adjective = getList(file);
-             if(file.getName().contains("NN"))
-                 noun = getList(file);
-             if(file.getName().contains("VB"))
-                 verb = getList(file);
-         }
+       
+        //System.out.println(parts_of_speech);
 
-                 System.out.println("adjective:"+adjective.toString());
-                   System.out.println("noun:"+noun.toString());
-                    System.out.println("verb:"+verb.toString());
+        System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
 
-        parts_of_speech = findPosTag(lexicalElement);
-        System.out.println(parts_of_speech);
-
-        System.out.println(prediction+" "+interestingness+" "+lexicalElement+" "+parts_of_speech);
-        
         /*if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else 
@@ -98,7 +96,6 @@ public class Interface {
             }
 
         }*/
-
     }
 
   
@@ -149,40 +146,8 @@ public class Interface {
         return "kb";
     }
 
-    private static String findPosTag(String lexicalElement) {
-        lexicalElement = lexicalElement.toLowerCase().strip().replace(" ", "_");
-        if (adjective.contains(lexicalElement)) {
-            return "JJ";
-        } else if (noun.contains(lexicalElement)) {
-            return "NN";
-        } else if (verb.contains(lexicalElement)) {
-            return "VB";
-        } else {
-            return "Not found";
-        }
-    }
+   
     
-    public static Set<String> getList(File fileName) throws FileNotFoundException, IOException {
-        Set<String> entities = new TreeSet<String>();
-
-        BufferedReader reader;
-        String line = "";
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            line = reader.readLine();
-           
-            while (line != null) {
-                line = reader.readLine();
-                if (line != null) {
-                    String url = line.toLowerCase().strip().replace(" ", "_").trim();
-                    entities.add(url);
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return entities;
-    }
+  
 
 }
