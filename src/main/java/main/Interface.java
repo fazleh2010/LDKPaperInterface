@@ -60,17 +60,18 @@ public class Interface {
 
         parts_of_speech = findPosTag(lexicalElement);
 
-        System.out.println(prediction+" "+interestingness+" "+lexicalElement);
-        if (str.length < 3) {
+        System.out.println(prediction+" "+interestingness+" "+lexicalElement+" "+parts_of_speech);
+        
+        /*if (str.length < 3) {
             throw new Exception("less number of argument!!!");
-        } else //lexicalElement="russian";*/
+        } else 
         {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
                 Result result = new Result();
                 result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
                 List<String> rows = result.getRows();
-                System.out.println(result.getContent());
+                //System.out.println(result.getContent());
 
                 if (!rows.isEmpty()) {
                     stringAdd = createTable(rows, prediction, interestingness);
@@ -82,7 +83,7 @@ public class Interface {
 
             }
 
-        }
+        }*/
 
     }
 
