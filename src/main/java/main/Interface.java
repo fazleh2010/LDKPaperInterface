@@ -54,9 +54,9 @@ public class Interface {
         interestingness = str[1];
         lexicalElement = str[2];
 
-        adjective = getList("z_" + "JJ" + "_" + prediction + "_" + interestingness + ".txt");
-        noun = getList("z_" + "NN" + "_" + prediction + "_" + interestingness + ".txt");
-        verb = getList("z_" + "VB" + "_" + prediction + "_" + interestingness + ".txt");
+        adjective = getList(outputDir+"z_" + "JJ" + "_" + prediction + "_" + interestingness + ".txt");
+        noun = getList(outputDir+"z_" + "NN" + "_" + prediction + "_" + interestingness + ".txt");
+        verb = getList(outputDir+"z_" + "VB" + "_" + prediction + "_" + interestingness + ".txt");
 
         parts_of_speech = findPosTag(lexicalElement);
 
