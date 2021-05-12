@@ -72,9 +72,9 @@ public class Interface {
        
         //System.out.println(parts_of_speech);
 
-        System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
+        //System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
 
-        /*if (str.length < 3) {
+        if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else 
         {
@@ -83,7 +83,7 @@ public class Interface {
                 Result result = new Result();
                 result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
                 List<String> rows = result.getRows();
-                //System.out.println(result.getContent());
+                System.out.println(result.getContent());
 
                 if (!rows.isEmpty()) {
                     stringAdd = createTable(rows, prediction, interestingness);
@@ -95,7 +95,7 @@ public class Interface {
 
             }
 
-        }*/
+        }
     }
 
   
