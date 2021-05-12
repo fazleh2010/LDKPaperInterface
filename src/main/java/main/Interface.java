@@ -158,7 +158,7 @@ public class Interface {
         } else if (verb.contains(lexicalElement)) {
             return "VB";
         } else {
-            return "JJ";
+            return "Not found";
         }
     }
     
