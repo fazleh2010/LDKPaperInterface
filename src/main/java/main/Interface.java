@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static main.Grep.filename;
@@ -37,37 +38,45 @@ public class Interface {
     //public static String javaScriptDir ="../";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
     public static String javaScriptFileName = "table.js";
+    public static Set<String> adjective=new TreeSet<String>();
+    public static Set<String> noun=new TreeSet<String>();
+    public static Set<String> verb=new TreeSet<String>();
+        
 
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "predict_po_for_s_given_localized_l", interestingness="Coherence",lexicalElement = "australian", parts_of_speech = "JJ";
+        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "australian", parts_of_speech = "JJ";
         String stringAdd = "";
         Boolean flag = false;
-         
+
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
-        
-        
-        //System.out.println(prediction+" "+interestingness+" "+lexicalElement);
-      
+
+        adjective = getList("z_" + "JJ" + "_" + prediction + "_" + interestingness + ".txt");
+        noun = getList("z_" + "NN" + "_" + prediction + "_" + interestingness + ".txt");
+        verb = getList("z_" + "VB" + "_" + prediction + "_" + interestingness + ".txt");
+
+        parts_of_speech = findPosTag(lexicalElement);
+
+        System.out.println(prediction+" "+interestingness+" "+lexicalElement);
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else //lexicalElement="russian";*/
         {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
-                Result result=new Result();
+                Result result = new Result();
                 result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
                 List<String> rows = result.getRows();
                 System.out.println(result.getContent());
 
                 if (!rows.isEmpty()) {
-                    stringAdd = createTable(rows,prediction,interestingness);
-                                    //System.out.println(stringAdd);
+                    stringAdd = createTable(rows, prediction, interestingness);
+                    //System.out.println(stringAdd);
 
-                    flag=FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
+                    flag = FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
                     //System.out.println("flile add status!!"+flag);
                 }
 
@@ -123,6 +132,42 @@ public class Interface {
         if(prediction.contains(PredictionRules.predict_po_for_s_given_localized_l))
             return "predicate object pair";
         return "kb";
+    }
+
+    private static String findPosTag(String lexicalElement) {
+        lexicalElement = lexicalElement.toLowerCase().strip().replace(" ", "_");
+        if (adjective.contains(lexicalElement)) {
+            return "JJ";
+        } else if (noun.contains(lexicalElement)) {
+            return "NN";
+        } else if (verb.contains(lexicalElement)) {
+            return "VB";
+        } else {
+            return "JJ";
+        }
+    }
+    
+    public static Set<String> getList(String fileName) throws FileNotFoundException, IOException {
+        Set<String> entities = new TreeSet<String>();
+
+        BufferedReader reader;
+        String line = "";
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            line = reader.readLine();
+           
+            while (line != null) {
+                line = reader.readLine();
+                if (line != null) {
+                    String url = line.toLowerCase().strip().replace(" ", "_").trim();
+                    entities.add(url);
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entities;
     }
 
 }
