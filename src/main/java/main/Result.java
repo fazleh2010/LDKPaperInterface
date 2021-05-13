@@ -136,7 +136,7 @@ public class Result {
                  part_of_speech = "Not found";
             rankLine += addQuote(part_of_speech )+ seperator + addQuote(prediction);
             //System.out.println(rankLine);
-            //rankLine = rankLine.replace("\"", "");
+            rankLine = rankLine.replace("\"", "");
 
         }
         return rankLine;

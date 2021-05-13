@@ -54,14 +54,14 @@ public class Interface {
         interestingness = str[1];
         lexicalElement = str[2];
         
-        CheckPosTag checkPosTag=new CheckPosTag(outputDir,prediction, interestingness, lexicalElement);
+        /*CheckPosTag checkPosTag=new CheckPosTag(outputDir,prediction, interestingness, lexicalElement);
         if(checkPosTag.getFound()){
             parts_of_speech=checkPosTag.getPosTag();
         }
         else{
             System.out.println("0");
             return;
-        }
+        }*/
 
       
 
