@@ -53,31 +53,23 @@ public class Interface {
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
-        
-        CheckPosTag checkPosTag=new CheckPosTag(outputDir,prediction, interestingness, lexicalElement);
-        /*if(checkPosTag.getFound()){
-            parts_of_speech=checkPosTag.getPosTag();
-        }
-        else{
+
+        CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
+        if (checkPosTag.getFound()) {
+            parts_of_speech = checkPosTag.getPosTag();
+        } else {
             System.out.println("0");
             return;
-        }*/
-
-      
+        }
 
         //System.out.println("adjective:" + adjective.toString());
         //System.out.println("noun:" + noun.toString());
         //System.out.println("verb:" + verb.toString());
-        
-       
         //System.out.println(parts_of_speech);
-
         //System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
-
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
-        } else 
-        {
+        } else {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
                 Result result = new Result();
@@ -92,7 +84,6 @@ public class Interface {
                     flag = FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
                     //System.out.println("flile add status!!"+flag);
                 }*/
-
             }
 
         }
