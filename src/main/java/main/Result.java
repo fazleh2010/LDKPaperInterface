@@ -27,6 +27,7 @@ public class Result {
     private List<String> rows = new ArrayList<String>();
     private String content = "";
     private Boolean flag = false;
+    private static String seperator = "+";
 
     public void resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction, String interestingness) throws Exception {
         lexicalElement = lexicalElement.toLowerCase().strip();
@@ -114,6 +115,37 @@ public class Result {
         String rankLine = line;
         if (line.contains(",")) {
             String[] info = line.split(",");
+            rankLine = addQuote(getValue(info[8])) + seperator
+                    + addQuote(getValue(info[9])) + seperator
+                    + addQuote(checkLabel(getValue(info[10]))) + seperator
+                    + addQuote(getValue(info[4])) + seperator;
+            //System.out.println("info[10]::"+info[10]);
+
+            List<String> list = getValueSpace(info[5]);
+            for (String value : list) {
+                rankLine +=  addQuote(value) + seperator;
+            }
+            if (part_of_speech.contains("JJ")) {
+                part_of_speech = "adjective";
+            } else if (part_of_speech.contains("NN")) {
+                part_of_speech = "noun";
+            } else if (part_of_speech.contains("VB")){
+                part_of_speech = "verb";
+            }
+            else
+                 part_of_speech = "Not found";
+            rankLine += addQuote(part_of_speech )+ seperator + addQuote(prediction);
+            //System.out.println(rankLine);
+            //rankLine = rankLine.replace("\"", "");
+
+        }
+        return rankLine;
+    }
+
+    /*private static String modifyLine(String line, String part_of_speech, String prediction) {
+        String rankLine = line;
+        if (line.contains(",")) {
+            String[] info = line.split(",");
             String lexicalElement = info[0];
             lexicalElement = lexicalElement.replace("\"", "");
             rankLine = getValue(info[1]) + "+" + getValue(info[4]) + "+";
@@ -127,9 +159,20 @@ public class Result {
 
         }
         return rankLine;
-    }
+    }*/
+   /* private static String getValueQuoteUnchanged(String string) {
+        if (string.contains("=")) {
+            String[] info = string.split("=");
+            string = string.replace("\"", "");
+            if(string.contains("@"))
+               return info[1];
+           
+        }
 
+        return string;
+    }*/
     private static String getValue(String string) {
+
         string = string.replace("\"", "");
 
         if (string.contains("=")) {
@@ -137,7 +180,21 @@ public class Result {
             return info[1];
         }
 
+        return string.strip().stripLeading().stripTrailing();
+    }
+    
+    private static String checkLabel(String string) {
+        if (string.contains("@")) {
+            String[] info = string.split("@");
+            string=addQuote(info[0])+"@"+info[1];
+            return string;
+        }
+
         return string;
+    }
+     private static String addQuote(String string) {
+        return "\""+string+"\"";
+        //return string;
     }
 
     private static List<String> getValueSpace(String string) {

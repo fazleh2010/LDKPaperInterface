@@ -85,13 +85,13 @@ public class Interface {
                 List<String> rows = result.getRows();
                 System.out.println(result.getContent());
 
-                if (!rows.isEmpty()) {
+                /*if (!rows.isEmpty()) {
                     stringAdd = createTable(rows, prediction, interestingness);
                     //System.out.println(stringAdd);
 
                     flag = FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
                     //System.out.println("flile add status!!"+flag);
-                }
+                }*/
 
             }
 
@@ -99,7 +99,7 @@ public class Interface {
     }
 
   
-    private static String createTable(List<String> rows, String prediction,String interestingness) {
+    /*private static String createTable(List<String> rows, String prediction,String interestingness) {
          String kbTitle=getKB(prediction); 
          String tableStr = "$(document).ready(function() {\n"
                 + "    $('#example').DataTable( {\n"
@@ -137,7 +137,7 @@ public class Interface {
         
         return str;
        
-    }
+    }*/
     
    
     private static String getKB(String prediction) {
