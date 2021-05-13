@@ -115,26 +115,26 @@ public class Result {
         String rankLine = line;
         if (line.contains(",")) {
             String[] info = line.split(",");
-            rankLine = addQuote(getValue(info[8])) + seperator
-                    + addQuote(getValue(info[9])) + seperator
+            rankLine = addQuote(checkLabel(getValue(info[8]))) + seperator
+                    + addQuote(checkLabel(getValue(info[9]))) + seperator
                     + addQuote(checkLabel(getValue(info[10]))) + seperator
                     + addQuote(getValue(info[4])) + seperator;
             //System.out.println("info[10]::"+info[10]);
 
             List<String> list = getValueSpace(info[5]);
             for (String value : list) {
-                rankLine +=  addQuote(value) + seperator;
+                rankLine += addQuote(value) + seperator;
             }
             if (part_of_speech.contains("JJ")) {
                 part_of_speech = "adjective";
             } else if (part_of_speech.contains("NN")) {
                 part_of_speech = "noun";
-            } else if (part_of_speech.contains("VB")){
+            } else if (part_of_speech.contains("VB")) {
                 part_of_speech = "verb";
+            } else {
+                part_of_speech = "Not found";
             }
-            else
-                 part_of_speech = "Not found";
-            rankLine += addQuote(part_of_speech )+ seperator + addQuote(prediction);
+            rankLine += addQuote(part_of_speech) + seperator + addQuote(prediction);
             //System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
 
@@ -184,17 +184,28 @@ public class Result {
     }
     
     private static String checkLabel(String string) {
+
         if (string.contains("@")) {
             String[] info = string.split("@");
-            string=addQuote(info[0])+"@"+info[1];
+            string = addQuote(info[0]) + "@" + info[1];
             return string;
+        }
+        if (string.contains("http")) {
+            string = replaceNotation(string);
         }
 
         return string;
     }
-     private static String addQuote(String string) {
-        return "\""+string+"\"";
-        //return string;
+
+    private static String addQuote(String string) {
+        return "\"" + string + "\"";
+    }
+     
+    private static String replaceNotation(String string) {
+        string=string.replace("http://dbpedia.org/property/", "dbp:");
+        string=string.replace("http://dbpedia.org/ontology/", "dbo:");
+        string=string.replace("http://dbpedia.org/resource/", "res:");
+        return string;
     }
 
     private static List<String> getValueSpace(String string) {
@@ -225,5 +236,7 @@ public class Result {
     public String getContent() {
         return content;
     }
+
+    
 
 }
