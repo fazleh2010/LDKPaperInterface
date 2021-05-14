@@ -46,7 +46,7 @@ public class Interface {
 
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "VB";
+        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
         String stringAdd = "";
         Boolean flag = false;
 
@@ -54,13 +54,13 @@ public class Interface {
         interestingness = str[1];
         lexicalElement = str[2];
 
-        CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
+        /*CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
         if (checkPosTag.getFound()) {
             parts_of_speech = checkPosTag.getPosTag();
         } else {
             System.out.println("0");
             return;
-        }
+        }*/
 
         //System.out.println("adjective:" + adjective.toString());
         //System.out.println("noun:" + noun.toString());
