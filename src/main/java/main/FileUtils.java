@@ -100,7 +100,7 @@ public class FileUtils {
             }
             reader.close();
         } catch (IOException e) {
-            throw new Exception("No prefix found!!");
+            throw new Exception("No prefix found!!"+e.getMessage());
         }
         return tempHash;
     }

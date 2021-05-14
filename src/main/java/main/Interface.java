@@ -38,7 +38,7 @@ public class Interface {
     //public static String javaScriptDir ="../";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
     public static String resourceDir = "/var/www/html/ontologyLexicalization/resources/";
-    public static String configDir = resourceDir + " conf/";
+    public static String configDir = resourceDir + "conf/";
 
      //public static String configDir = "src/main/resources/config/";
     public static String configFileName = "prefix.prop";
