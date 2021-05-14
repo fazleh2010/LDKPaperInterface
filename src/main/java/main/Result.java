@@ -178,12 +178,7 @@ public class Result {
         return "\"" + string + "\"";
     }
 
-    private static String replaceNotation(String string) {
-        string = string.replace("http://dbpedia.org/property/", "dbp:");
-        string = string.replace("http://dbpedia.org/ontology/", "dbo:");
-        string = string.replace("http://dbpedia.org/resource/", "res:");
-        return string;
-    }
+  
 
     private static List<String> getValueSpace(String string) {
         List<String> arrayList = new ArrayList<String>();
@@ -247,7 +242,7 @@ public class Result {
             return string;
         }
         if (string.contains("http")) {
-            string = replaceNotation(string);
+            return string;
         }
 
         return string;
