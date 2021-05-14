@@ -62,7 +62,7 @@ public class Result {
             index = index + 1;
             Set<String> stringList = sortedLines.get(value);
             for (String string : stringList) {
-                string = modifyLine(string, parts_of_speech, prediction);
+                string = modifyLine(string);
                 String line = string + "\n";
                 rows.add(string);
                 content += line;
@@ -111,7 +111,7 @@ public class Result {
         return classNameLines;
     }
 
-    private static String modifyLine(String line, String part_of_speech, String prediction) {
+    private static String modifyLine(String line) {
         String rankLine = line;
         if (line.contains(",")) {
             String[] info = line.split(",");
@@ -125,21 +125,21 @@ public class Result {
             for (String value : list) {
                 rankLine += addQuote(value) + seperator;
             }
-            if (part_of_speech.contains("JJ")) {
-                part_of_speech = "adjective";
-            } else if (part_of_speech.contains("NN")) {
-                part_of_speech = "noun";
-            } else if (part_of_speech.contains("VB")) {
-                part_of_speech = "verb";
-            } else {
-                part_of_speech = "Not found";
-            }
-            rankLine += addQuote(part_of_speech) + seperator + addQuote(prediction);
+            String part_of_speech = formatPosTag(info[11]).strip().trim();
+            String rule=info[12].replace("&", ",").strip().trim();
+            //System.out.println("rule::"+rule);
+            
+            rankLine += addQuote(part_of_speech) + seperator + addQuote(rule);
             //System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
 
         }
         return rankLine;
+    }
+
+    private static String formatPosTag(String string) {
+        string=string.replace("_", " ");
+        return string;
     }
 
     /*private static String modifyLine(String line, String part_of_speech, String prediction) {
@@ -212,7 +212,9 @@ public class Result {
         List<String> arrayList = new ArrayList<String>();
         string = string.replace("\"", "");
         String[] info = string.split(" ");
+          //System.out.println("!!!!!!!Start!!!!!!!!!:");
         for (String key : info) {
+            //System.out.println("key:"+key);
             if (key.isEmpty()) {
                 continue;
             }
@@ -223,6 +225,8 @@ public class Result {
             }
             arrayList.add(key);
         }
+         //System.out.println("!!!!!!!End!!!!!!!!!:");
+
         return arrayList;
     }
 
@@ -237,6 +241,15 @@ public class Result {
         return content;
     }
 
-    
+    /*
+    key:Coherence=0.0354609929078014
+    key:condAB=0.833333333333333
+    key:condBA=0.037037037037037
+    key:supA=6.0
+    key:supAB=5.0
+    key:supB=135.0
 
+     */
+
+    
 }

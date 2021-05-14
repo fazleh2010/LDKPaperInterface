@@ -5,6 +5,8 @@ main/Grep.class
 main/TextAnalyzer.class
 main/DirectoryLocation.class
 main/FileUtils.class
+utils/CsvFile.class
 main/test.class
+utils/CsvConstants.class
 main/CheckPosTag.class
 main/EvaluationTriple.class
