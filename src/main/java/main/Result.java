@@ -115,10 +115,19 @@ public class Result {
     private static String modifyLine(String line) {
         String rankLine = line;
         if (line.contains(",")) {
+            
             String[] info = line.split(",");
-            rankLine = addQuote(checkLabel(getValue(checkInvalid(info[8],8)))) + seperator
-                    + addQuote(checkLabel(getValue(checkInvalid(info[9],9)))) + seperator
-                    + addQuote(checkLabel(getValue(checkInvalid(info[10],10)))) + seperator
+            String subject = info[8];
+            String predicate = info[9];
+            String object = info[10];
+            subject=checkInvalid(subject,8);
+            predicate=checkInvalid(predicate,9);
+            object=checkInvalid(object,10);
+            
+       
+            rankLine = addQuote(checkLabel(getValue(subject))) + seperator
+                    + addQuote(checkLabel(getValue(predicate))) + seperator
+                    + addQuote(checkLabel(getValue(object))) + seperator
                     + addQuote(getValue(info[4])) + seperator;
             //System.out.println("info[10]::"+info[10]);
 
@@ -243,29 +252,28 @@ public class Result {
     }
     
     private static String checkInvalid(String string, Integer index) {
-        String check=null; 
-        if (index == 8) {
-            check  = string.strip().trim();
-            if (string.equals("e")) {
-                return "";
-            }
-
-        }
-        else if (index == 9) {
-            check  = string.strip().trim();
-            if (string.equals("p")) {
-                return "";
-            }
-
-        } else if (index == 10) {
-            check  = string.strip().trim();
-            if (string.equals("o")) {
-                return "";
-            }
-
-        } else {
+        if (string.contains("http") || string.contains("@")) {
             return string;
         }
+        if (index == 8 || index == 9 || index == 10) {
+            string = string.strip().trim().replace("\"", "");
+            if (index == 8 && string.equals("e")) {
+                System.out.println(string + " " + index);
+
+                return "";
+
+            } else if (index == 9 && string.equals("p")) {
+                System.out.println(string + " " + index);
+
+                return "";
+
+            } else if (index == 10 && string.equals("o")) {
+                System.out.println(string + " " + index);
+                return "";
+
+            }
+        }
+
         return string;
     }
 
@@ -294,6 +302,12 @@ public class Result {
 10 "http://dbpedia.org/resource/India", 
 11 "JJ", "dbo:Monument in c_e and 'located' in l_e(c&p&so) => (e& dbo:location& dbr:India) in G",
     */
+    public static void main(String[] args) {
+        String line = "\"british_irish\",\"dbp:ruNationalteam British_and_Irish_Lions\", \"1.0\", \" dbp:ruNationalteam British_and_Irish_Lions\", \"RugbyPlayer\", \"MaxConf=1.0 condAB=1.0 condBA=0.0614525139664804 supA=11.0 supAB=11.0 supB=179.0\", \"JJ\", \"MaxConf\", \"e\", \"http://dbpedia.org/property/ruNationalteam\", \"http://dbpedia.org/resource/British_and_Irish_Lions\", \"JJ_JJ\", \"dbo:RugbyPlayer in c_e and 'British and Irish' in l_e(c&p&so) => (e& dbp:ruNationalteam& dbr:British_and_Irish_Lions) in G\"";
+        
+        String check=checkInvalid("e",8);
+        String modifyLine=modifyLine(line);
+        System.out.println(modifyLine);
+    }
 
-    
 }
