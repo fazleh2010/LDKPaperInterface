@@ -24,6 +24,7 @@ import java.util.TreeMap;
  */
 public class Result {
 
+  
     private List<String> rows = new ArrayList<String>();
     private String content = "";
     private Boolean flag = false;
@@ -115,9 +116,9 @@ public class Result {
         String rankLine = line;
         if (line.contains(",")) {
             String[] info = line.split(",");
-            rankLine = addQuote(checkLabel(getValue(info[8]))) + seperator
-                    + addQuote(checkLabel(getValue(info[9]))) + seperator
-                    + addQuote(checkLabel(getValue(info[10]))) + seperator
+            rankLine = addQuote(checkLabel(getValue(checkInvalid(info[8],8)))) + seperator
+                    + addQuote(checkLabel(getValue(checkInvalid(info[9],9)))) + seperator
+                    + addQuote(checkLabel(getValue(checkInvalid(info[10],10)))) + seperator
                     + addQuote(getValue(info[4])) + seperator;
             //System.out.println("info[10]::"+info[10]);
 
@@ -240,6 +241,34 @@ public class Result {
     public String getContent() {
         return content;
     }
+    
+    private static String checkInvalid(String string, Integer index) {
+        String check=null; 
+        if (index == 8) {
+            check  = string.strip().trim();
+            if (string.equals("e")) {
+                return "";
+            }
+
+        }
+        else if (index == 9) {
+            check  = string.strip().trim();
+            if (string.equals("p")) {
+                return "";
+            }
+
+        } else if (index == 10) {
+            check  = string.strip().trim();
+            if (string.equals("o")) {
+                return "";
+            }
+
+        } else {
+            return string;
+        }
+        return string;
+    }
+
 
     /*
     key:Coherence=0.0354609929078014
@@ -250,6 +279,21 @@ public class Result {
     key:supB=135.0
 
      */
+    
+    /*
+    0 "located",
+1 "dbo:location India", 
+2 "0.161290322580645", 
+3 " dbo:location India", 
+4 "Monument", 
+5 "MaxConf=0.161290322580645 condAB=0.0704225352112676 condBA=0.161290322580645 supA=71.0 supAB=5.0 supB=31.0", 
+6 "JJ", 
+7 "MaxConf", 
+8 "e", 
+9 "http://dbpedia.org/ontology/location", 
+10 "http://dbpedia.org/resource/India", 
+11 "JJ", "dbo:Monument in c_e and 'located' in l_e(c&p&so) => (e& dbo:location& dbr:India) in G",
+    */
 
     
 }
