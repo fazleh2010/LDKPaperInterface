@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import static main.Interface.configDir;
+import static main.Interface.configFileName;
 
 /**
  *
@@ -24,13 +26,12 @@ import java.util.TreeMap;
  */
 public class Result {
 
-  
     private List<String> rows = new ArrayList<String>();
     private String content = "";
     private Boolean flag = false;
     private static String seperator = "+";
 
-    public void resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction, String interestingness) throws Exception {
+    public void resultStr(String outputDir, String lexicalElement, String parts_of_speech, String prediction, String interestingness, Map<String, String> prefix) throws Exception {
         lexicalElement = lexicalElement.toLowerCase().strip();
 
         Map<Double, Set<String>> sortedLines = new TreeMap<Double, Set<String>>();
@@ -70,6 +71,8 @@ public class Result {
 
             }
         }
+
+        content = replaceString(prefix, content);
 
     }
 
@@ -115,16 +118,15 @@ public class Result {
     private static String modifyLine(String line) {
         String rankLine = line;
         if (line.contains(",")) {
-            
+
             String[] info = line.split(",");
             String subject = info[8];
             String predicate = info[9];
             String object = info[10];
-            subject=checkInvalid(subject,8);
-            predicate=checkInvalid(predicate,9);
-            object=checkInvalid(object,10);
-            
-       
+            subject = checkInvalid(subject, 8);
+            predicate = checkInvalid(predicate, 9);
+            object = checkInvalid(object, 10);
+
             rankLine = addQuote(checkLabel(getValue(subject))) + seperator
                     + addQuote(checkLabel(getValue(predicate))) + seperator
                     + addQuote(checkLabel(getValue(object))) + seperator
@@ -136,9 +138,9 @@ public class Result {
                 rankLine += addQuote(value) + seperator;
             }
             String part_of_speech = formatPosTag(info[11]).strip().trim();
-            String rule=info[12].replace("&", ",").strip().trim();
+            String rule = info[12].replace("&", ",").strip().trim();
             //System.out.println("rule::"+rule);
-            
+
             rankLine += addQuote(part_of_speech) + seperator + addQuote(rule);
             //System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
@@ -148,39 +150,18 @@ public class Result {
     }
 
     private static String formatPosTag(String string) {
-        string=string.replace("_", " ");
+        string = string.replace("_", " ");
         return string;
     }
 
-    /*private static String modifyLine(String line, String part_of_speech, String prediction) {
-        String rankLine = line;
-        if (line.contains(",")) {
-            String[] info = line.split(",");
-            String lexicalElement = info[0];
-            lexicalElement = lexicalElement.replace("\"", "");
-            rankLine = getValue(info[1]) + "+" + getValue(info[4]) + "+";
-            List<String> list = getValueSpace(info[5]);
-            for (String value : list) {
-                rankLine += value + "+";
-            }
-            rankLine += part_of_speech + "+" + prediction;
-            //System.out.println(rankLine);
-            rankLine = rankLine.replace("\"", "");
-
+    public static String replaceString(Map<String, String> tempHash, String string) throws FileNotFoundException, IOException, Exception {
+        for (String key : tempHash.keySet()) {
+            String value = tempHash.get(key);
+            string = string.replace(key, value + ":");
         }
-        return rankLine;
-    }*/
-   /* private static String getValueQuoteUnchanged(String string) {
-        if (string.contains("=")) {
-            String[] info = string.split("=");
-            string = string.replace("\"", "");
-            if(string.contains("@"))
-               return info[1];
-           
-        }
-
         return string;
-    }*/
+    }
+
     private static String getValue(String string) {
 
         string = string.replace("\"", "");
@@ -192,17 +173,15 @@ public class Result {
 
         return string.strip().stripLeading().stripTrailing();
     }
-    
-   
 
     private static String addQuote(String string) {
         return "\"" + string + "\"";
     }
-     
+
     private static String replaceNotation(String string) {
-        string=string.replace("http://dbpedia.org/property/", "dbp:");
-        string=string.replace("http://dbpedia.org/ontology/", "dbo:");
-        string=string.replace("http://dbpedia.org/resource/", "res:");
+        string = string.replace("http://dbpedia.org/property/", "dbp:");
+        string = string.replace("http://dbpedia.org/ontology/", "dbo:");
+        string = string.replace("http://dbpedia.org/resource/", "res:");
         return string;
     }
 
@@ -210,7 +189,7 @@ public class Result {
         List<String> arrayList = new ArrayList<String>();
         string = string.replace("\"", "");
         String[] info = string.split(" ");
-          //System.out.println("!!!!!!!Start!!!!!!!!!:");
+        //System.out.println("!!!!!!!Start!!!!!!!!!:");
         for (String key : info) {
             //System.out.println("key:"+key);
             if (key.isEmpty()) {
@@ -223,7 +202,7 @@ public class Result {
             }
             arrayList.add(key);
         }
-         //System.out.println("!!!!!!!End!!!!!!!!!:");
+        //System.out.println("!!!!!!!End!!!!!!!!!:");
 
         return arrayList;
     }
@@ -238,7 +217,7 @@ public class Result {
     public String getContent() {
         return content;
     }
-    
+
     private static String checkInvalid(String string, Integer index) {
         if (string.contains("http") || string.contains("@")) {
             return string;
@@ -259,19 +238,17 @@ public class Result {
 
         return string;
     }
-    
+
     private static String checkLabel(String string) {
 
         if (string.contains("@")) {
             String[] info = string.split("@");
-            string=  "\"" + info[0] + "\""+ "@" + info[1];
+            string = "\"" + info[0] + "\"" + "@" + info[1];
             return string;
         }
         if (string.contains("http")) {
             string = replaceNotation(string);
         }
-        
-        
 
         return string;
     }
@@ -286,8 +263,7 @@ public class Result {
     key:supB=135.0
 
      */
-    
-    /*
+ /*
     0 "located",
 1 "dbo:location India", 
 2 "0.161290322580645", 
@@ -300,15 +276,15 @@ public class Result {
 9 "http://dbpedia.org/ontology/location", 
 10 "http://dbpedia.org/resource/India", 
 11 "JJ", "dbo:Monument in c_e and 'located' in l_e(c&p&so) => (e& dbo:location& dbr:India) in G",
-    */
+     */
     public static void main(String[] args) {
         String line = "\"british_irish\",\"dbp:ruNationalteam British_and_Irish_Lions\", \"1.0\", \" dbp:ruNationalteam British_and_Irish_Lions\", \"RugbyPlayer\", \"MaxConf=1.0 condAB=1.0 condBA=0.0614525139664804 supA=11.0 supAB=11.0 supB=179.0\", \"JJ\", \"MaxConf\", \"e\", \"http://dbpedia.org/property/ruNationalteam\", \"\\\"british_irish\\\"\"+\"@en\", \"JJ_JJ\", \"dbo:RugbyPlayer in c_e and 'British and Irish' in l_e(c&p&so) => (e& dbp:ruNationalteam& dbr:British_and_Irish_Lions) in G\"";
-        
-        String check=checkInvalid("e",8);
-        String modifyLine=modifyLine(line);
+
+        String check = checkInvalid("e", 8);
+        String modifyLine = modifyLine(line);
         System.out.println(modifyLine);
-        
-        check=checkLabel("\"british_irish\""+"@en");
+
+        check = checkLabel("\"british_irish\"" + "@en");
         System.out.println(check);
     }
 

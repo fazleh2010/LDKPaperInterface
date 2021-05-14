@@ -5,20 +5,29 @@
  */
 package main;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
  * @author elahi
  */
 public class FileUtils {
+      public static String configDir = "src/main/resources/config/";
+     public static String configFileName = "prefix.prop";
 
     public static List<String> getSpecificFiles(String fileDir, String prediction, String extension) {
         List<String> selectedFiles = new ArrayList<String>();
@@ -67,6 +76,40 @@ public class FileUtils {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+
+    }
+     
+   
+
+     
+    public static Map<String, String> getHash(String fileName) throws FileNotFoundException, IOException, Exception {
+        Map<String, String> tempHash = new TreeMap<String, String>();
+        BufferedReader reader;
+        String line = "";
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            line = reader.readLine();
+            while (line != null) {
+                if (line.contains("=")) {
+                    String[] info = line.split("=");
+                    String key = info[0].trim().strip();
+                    String value = info[1].trim().strip();
+                    tempHash.put(key, value);
+                }
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            throw new Exception("No prefix found!!");
+        }
+        return tempHash;
+    }
+    
+    public static void main(String []args) throws Exception{
+        Map<String,String> temp=getHash(configDir+configFileName);
+        String string="+http://xmlns.com/foaf/0.1/name+@en+SoccerTournament+0.03+0.83+0.03+6.0+5.0+135.+JJ CD+dbo:SoccerTournament in c_e and 'total of 28' in l_e(c,p,os) => (e, foaf:name, @en) in G";
+        string=Result.replaceString(temp,string);
+                System.out.println(string);
 
     }
 

@@ -37,10 +37,14 @@ public class Interface {
     public static String javaScriptDir = "/home/melahi/";
     //public static String javaScriptDir ="../";
     //public static String javaScriptDir = "/var/www/html/ontologyLexicalization/";
+    public static String configDir = "/var/www/html/ontologyLexicalization/resources/";
+     //public static String configDir = "src/main/resources/config/";
+    public static String configFileName = "prefix.prop";
     public static String javaScriptFileName = "table.js";
     public static Set<String> adjective=new TreeSet<String>();
     public static Set<String> noun=new TreeSet<String>();
     public static Set<String> verb=new TreeSet<String>();
+    private Map<String,String> prefixes=new TreeMap<String,String>();
         
 
 
@@ -53,8 +57,12 @@ public class Interface {
         prediction = str[0];
         interestingness = str[1];
         lexicalElement = str[2];
+        
+       Map<String,String>  prefixes=FileUtils.getHash(configDir+configFileName);
+        
+        
 
-        /*CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
+       /*CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
         if (checkPosTag.getFound()) {
             parts_of_speech = checkPosTag.getPosTag();
         } else {
@@ -73,7 +81,7 @@ public class Interface {
             lexicalElement = " \"" + lexicalElement + "\" ";
             if (lexicalElement != null) {
                 Result result = new Result();
-                result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness);
+                result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness,prefixes);
                 List<String> rows = result.getRows();
                 System.out.println(result.getContent());
 
