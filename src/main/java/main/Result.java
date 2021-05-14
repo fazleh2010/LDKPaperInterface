@@ -264,7 +264,7 @@ public class Result {
 
         if (string.contains("@")) {
             String[] info = string.split("@");
-            string=  "\\"+"\"" + info[0] + "\""+"\\"+ "@" + info[1];
+            string=  "\"" + info[0] + "\""+ "@" + info[1];
             return string;
         }
         if (string.contains("http")) {
