@@ -124,11 +124,13 @@ public class Result {
             subject = checkInvalid(subject, 8);
             predicate = checkInvalid(predicate, 9);
             object = checkInvalid(object, 10);
+            
+            String className="dbo:"+info[4].replace(" ", "");
 
             rankLine = addQuote(checkLabel(getValue(subject))) + seperator
                     + addQuote(checkLabel(getValue(predicate))) + seperator
                     + addQuote(checkLabel(getValue(object))) + seperator
-                    + addQuote(getValue(info[4])) + seperator;
+                    + addQuote(getValue(className)) + seperator;
             //System.out.println("info[10]::"+info[10]);
 
             List<String> list = getValueSpace(info[5]);
@@ -166,7 +168,7 @@ public class Result {
 
         if (string.contains("=")) {
             String[] info = string.split("=");
-            return info[1];
+            return info[1].strip().trim();
         }
 
         return string.strip().stripLeading().stripTrailing();
