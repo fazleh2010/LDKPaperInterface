@@ -1,12 +1,11 @@
-main/Interface.class
+analyzer/PosAnalyzer.class
+analyzer/Lemmatizer.class
 main/PredictionRules.class
 main/Result.class
-main/Grep.class
-main/TextAnalyzer.class
-main/DirectoryLocation.class
+utils/PairCheck.class
 main/FileUtils.class
 utils/CsvFile.class
-main/test.class
+Interface.class
 utils/CsvConstants.class
 main/CheckPosTag.class
-main/EvaluationTriple.class
+analyzer/TextAnalyzer.class

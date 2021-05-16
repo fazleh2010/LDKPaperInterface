@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
 
+import main.*;
+import analyzer.PosAnalyzer;
+import static analyzer.TextAnalyzer.POS_TAGGER_WORDS;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,7 +25,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static main.Grep.filename;
 
 /**
  *
@@ -40,66 +41,12 @@ public class Interface {
     public static String resourceDir = "/var/www/html/ontologyLexicalization/resources/";
     public static String configDir = resourceDir + "conf/";
 
-     //public static String configDir = "src/main/resources/config/";
+    //public static String configDir = "src/main/resources/config/";
     public static String configFileName = "prefix.prop";
     public static String javaScriptFileName = "table.js";
-    public static Set<String> adjective=new TreeSet<String>();
-    public static Set<String> noun=new TreeSet<String>();
-    public static Set<String> verb=new TreeSet<String>();
-    private Map<String,String> prefixes=new TreeMap<String,String>();
-        
 
+    private Map<String, String> prefixes = new TreeMap<String, String>();
 
-    public static void main(String str[]) throws Exception {
-        Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
-        String stringAdd = "";
-        Boolean flag = false;
-
-        prediction = str[0];
-        interestingness = str[1];
-        lexicalElement = str[2];
-        
-       Map<String,String>  prefixes=FileUtils.getHash(configDir+configFileName);
-        
-        
-
-       /*CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
-        if (checkPosTag.getFound()) {
-            parts_of_speech = checkPosTag.getPosTag();
-        } else {
-            System.out.println("0");
-            return;
-        }*/
-
-        //System.out.println("adjective:" + adjective.toString());
-        //System.out.println("noun:" + noun.toString());
-        //System.out.println("verb:" + verb.toString());
-        //System.out.println(parts_of_speech);
-        //System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
-        if (str.length < 3) {
-            throw new Exception("less number of argument!!!");
-        } else {
-            lexicalElement = " \"" + lexicalElement + "\" ";
-            if (lexicalElement != null) {
-                Result result = new Result();
-                result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness,prefixes);
-                List<String> rows = result.getRows();
-                System.out.println(result.getContent());
-
-                /*if (!rows.isEmpty()) {
-                    stringAdd = createTable(rows, prediction, interestingness);
-                    //System.out.println(stringAdd);
-
-                    flag = FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
-                    //System.out.println("flile add status!!"+flag);
-                }*/
-            }
-
-        }
-    }
-
-  
     /*private static String createTable(List<String> rows, String prediction,String interestingness) {
          String kbTitle=getKB(prediction); 
          String tableStr = "$(document).ready(function() {\n"
@@ -139,16 +86,74 @@ public class Interface {
         return str;
        
     }*/
-    
-   
     private static String getKB(String prediction) {
-        if(prediction.contains(PredictionRules.predict_po_for_s_given_localized_l))
+        if (prediction.contains(PredictionRules.predict_po_for_s_given_localized_l)) {
             return "predicate object pair";
+        }
         return "kb";
     }
 
-   
-    
-  
+    /* public static void main(String[] args) throws Exception {
+        String term="australian";
+        PosAnalyzer analyzer = new PosAnalyzer(term, POS_TAGGER_WORDS, 5);
+        LineInfo LineInfo = new LineInfo(analyzer,term);
+        System.out.println(LineInfo.getWord());
+         System.out.println(LineInfo.getPosTag());
+    }*/
+    public static void main(String str[]) throws Exception {
+        Logger LOGGER = Logger.getLogger(Interface.class.getName());
+        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
+        String stringAdd = "";
+        Boolean flag = false;
 
+        prediction = str[0];
+        interestingness = str[1];
+        lexicalElement = str[2];
+
+        Map<String, String> prefixes = FileUtils.getHash(configDir + configFileName);
+        
+        PosAnalyzer analyzer = new PosAnalyzer(lexicalElement, POS_TAGGER_WORDS, 5);
+        CheckPosTag checkPosTag = new CheckPosTag(analyzer, lexicalElement);
+        if(!checkPosTag.getFound())
+            return;
+        parts_of_speech=checkPosTag.getPosTag();
+        //System.out.println(checkPosTag.getPosTag());
+
+       
+
+        //System.out.println("adjective:" + adjective.toString());
+        //System.out.println("noun:" + noun.toString());
+        //System.out.println("verb:" + verb.toString());
+        //System.out.println(parts_of_speech);
+        //System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
+        if (str.length < 3) {
+            throw new Exception("less number of argument!!!");
+        } else {
+            lexicalElement = " \"" + lexicalElement + "\" ";
+            if (lexicalElement != null) {
+                Result result = new Result();
+                result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness, prefixes);
+                List<String> rows = result.getRows();
+                System.out.println(result.getContent());
+
+            }
+
+        }
+    }
+
+    /*if (!rows.isEmpty()) {
+                    stringAdd = createTable(rows, prediction, interestingness);
+                    //System.out.println(stringAdd);
+
+                    flag = FileUtils.stringToFiles(stringAdd, javaScriptDir + javaScriptFileName);
+                    //System.out.println("flile add status!!"+flag);
+                }*/
+    
+     /*CheckPosTag checkPosTag = new CheckPosTag(outputDir, prediction, interestingness, lexicalElement);
+        if (checkPosTag.getFound()) {
+            parts_of_speech = checkPosTag.getPosTag();
+        } else {
+            System.out.println("0");
+            return;
+        }*/
 }

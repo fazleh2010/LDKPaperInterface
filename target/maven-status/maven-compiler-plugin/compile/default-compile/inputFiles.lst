@@ -1,12 +1,11 @@
 /home/elahi/new/server/LDKPaperInterface/src/main/java/utils/CsvConstants.java
 /home/elahi/new/server/LDKPaperInterface/src/main/java/main/PredictionRules.java
 /home/elahi/new/server/LDKPaperInterface/src/main/java/utils/CsvFile.java
-/home/elahi/new/server/LDKPaperInterface/src/main/java/main/Interface.java
 /home/elahi/new/server/LDKPaperInterface/src/main/java/main/Result.java
-/home/elahi/new/server/LDKPaperInterface/src/main/java/main/EvaluationTriple.java
-/home/elahi/new/server/LDKPaperInterface/src/main/java/main/TextAnalyzer.java
-/home/elahi/new/server/LDKPaperInterface/src/main/java/main/DirectoryLocation.java
+/home/elahi/new/server/LDKPaperInterface/src/main/java/analyzer/TextAnalyzer.java
 /home/elahi/new/server/LDKPaperInterface/src/main/java/main/CheckPosTag.java
-/home/elahi/new/server/LDKPaperInterface/src/main/java/main/test.java
+/home/elahi/new/server/LDKPaperInterface/src/main/java/utils/PairCheck.java
+/home/elahi/new/server/LDKPaperInterface/src/main/java/analyzer/PosAnalyzer.java
+/home/elahi/new/server/LDKPaperInterface/src/main/java/analyzer/Lemmatizer.java
 /home/elahi/new/server/LDKPaperInterface/src/main/java/main/FileUtils.java
-/home/elahi/new/server/LDKPaperInterface/src/main/java/main/Grep.java
+/home/elahi/new/server/LDKPaperInterface/src/main/java/Interface.java
