@@ -114,8 +114,11 @@ public class Interface {
         
         PosAnalyzer analyzer = new PosAnalyzer(lexicalElement, POS_TAGGER_WORDS, 5);
         CheckPosTag checkPosTag = new CheckPosTag(analyzer, lexicalElement);
-        if(!checkPosTag.getFound())
-            return;
+        if(!checkPosTag.getFound()){
+            System.out.println("0");
+            return;  
+        }
+          
         parts_of_speech=checkPosTag.getPosTag();
         //System.out.println(checkPosTag.getPosTag());
 
