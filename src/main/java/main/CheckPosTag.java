@@ -133,6 +133,7 @@ public class CheckPosTag {
 
     public Boolean findRulePattern(Map<String, String> pattern_rules, String string) {
         this.found = false;
+        string=string.replace(" ", "_").strip().trim();
         if (pattern_rules.containsKey(string)) {
             this.found = true;
             this.prediction = pattern_rules.get(string);

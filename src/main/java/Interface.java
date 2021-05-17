@@ -92,7 +92,7 @@ public class Interface {
     }*/
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "c_s,ll_s", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
+        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
         String stringAdd = "";
         Boolean flag = false;
 
@@ -107,21 +107,22 @@ public class Interface {
         CheckPosTag checkPosTag = new CheckPosTag(analyzer, lexicalElement);
         if (checkPosTag.getFound()) {
             parts_of_speech = checkPosTag.getPosTag();
+             System.out.println("parts_of_speech:"+parts_of_speech);
 
         } else {
             System.out.println("0");
             return;
         }
 
-        checkPosTag.findRulePattern(pattern_rules, str[0]);
+        /*checkPosTag.findRulePattern(pattern_rules, str[0]);
         if (checkPosTag.getFound()) {
             prediction = checkPosTag.getPrediction();
-            //System.out.println("prediction:"+prediction);
+            System.out.println("prediction:"+prediction);
         } else {
 
             System.out.println("0");
             return;
-        }
+        }*/
 
 
         //System.out.println(pattern_rules.values());
