@@ -7,12 +7,14 @@ package main;
 
 import analyzer.PosAnalyzer;
 import static analyzer.TextAnalyzer.POS_TAGGER_WORDS;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,9 +30,11 @@ public class CheckPosTag {
     private String word = null;
     private PosAnalyzer analyzer = null;
     private Boolean found = false;
-    
+    private String prediction = null;
+    @JsonIgnore
+
     private Set<String> adjective = new TreeSet<String>();
-    private Set<String> noun=new TreeSet<String> ();
+    private Set<String> noun = new TreeSet<String>();
     private static Set<String> verb = new TreeSet<String>();
 
     public CheckPosTag(PosAnalyzer analyzer, String word) throws Exception {
@@ -38,8 +42,8 @@ public class CheckPosTag {
         this.findPosTagFromTagger(word);
 
     }
-    
-     private void findPosTagFromTagger(String word) throws Exception {
+
+    private void findPosTagFromTagger(String word) throws Exception {
 
         if (!analyzer.getNouns().isEmpty()) {
             this.posTag = PosAnalyzer.NOUN;
@@ -69,8 +73,7 @@ public class CheckPosTag {
         this.word = word.trim().strip();
     }
 
-    
-     public CheckPosTag(String outputDir, String prediction, String interestingness, String lexicalElement) throws IOException {
+    public CheckPosTag(String outputDir, String prediction, String interestingness, String lexicalElement) throws IOException {
         List<File> listOfFiles = FileUtils.getSpecificFiles(outputDir, prediction, interestingness, "z_", ".txt");
 
         for (File file : listOfFiles) {
@@ -88,8 +91,8 @@ public class CheckPosTag {
         findPosTag(lexicalElement);
 
     }
-     
-     private void findPosTag(String lexicalElement) {
+
+    private void findPosTag(String lexicalElement) {
         lexicalElement = lexicalElement.replace("\"", "");
         lexicalElement = lexicalElement.toLowerCase().strip().replace(" ", "_");
         if (adjective.contains(lexicalElement)) {
@@ -128,8 +131,14 @@ public class CheckPosTag {
         return entities;
     }
 
-    
-    
+    public Boolean findRulePattern(Map<String, String> pattern_rules, String string) {
+        this.found = false;
+        if (pattern_rules.containsKey(string)) {
+            this.found = true;
+            this.prediction = pattern_rules.get(string);
+        }
+        return found;
+    }
 
     private String correct(String string) {
         return string.trim().strip();
@@ -153,6 +162,10 @@ public class CheckPosTag {
 
     public Boolean getFound() {
         return found;
+    }
+
+    public String getPrediction() {
+        return prediction;
     }
 
 }

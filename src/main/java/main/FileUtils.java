@@ -82,7 +82,7 @@ public class FileUtils {
    
 
      
-    public static Map<String, String> getHash(String fileName) throws FileNotFoundException, IOException, Exception {
+    public static Map<String, String> getHash(String fileName,String symbol) throws FileNotFoundException, IOException, Exception {
         Map<String, String> tempHash = new TreeMap<String, String>();
         BufferedReader reader;
         String line = "";
@@ -90,8 +90,8 @@ public class FileUtils {
             reader = new BufferedReader(new FileReader(fileName));
             line = reader.readLine();
             while (line != null) {
-                if (line.contains("=")) {
-                    String[] info = line.split("=");
+                if (line.contains(symbol)) {
+                    String[] info = line.split(symbol);
                     String key = info[0].trim().strip();
                     String value = info[1].trim().strip();
                     tempHash.put(key, value);
@@ -105,8 +105,32 @@ public class FileUtils {
         return tempHash;
     }
     
+      public static Map<String, String> getHash(String fileName,String symbol1, String symbol2) throws FileNotFoundException, IOException, Exception {
+        Map<String, String> tempHash = new TreeMap<String, String>();
+        BufferedReader reader;
+        String line = "";
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            line = reader.readLine();
+            while (line != null) {
+                line=line.replace(symbol1, "$");
+                if (line.contains(symbol2)) {
+                    String[] info = line.split(symbol2);
+                    String key = info[0].trim().strip().replace("$",symbol1).replace(" ","_");
+                    String value = info[1].trim().strip().replace("$",symbol1).replace(" ","_");
+                    tempHash.put(key, value);
+                }
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            throw new Exception("No prefix found!!"+e.getMessage());
+        }
+        return tempHash;
+    }
+    
     public static void main(String []args) throws Exception{
-        Map<String,String> temp=getHash(configDir+configFileName);
+        Map<String,String> temp=getHash(configDir+configFileName,"=");
         String string="+http://xmlns.com/foaf/0.1/name+@en+SoccerTournament+0.03+0.83+0.03+6.0+5.0+135.+JJ CD+dbo:SoccerTournament in c_e and 'total of 28' in l_e(c,p,os) => (e, foaf:name, @en) in G";
         string=Result.replaceString(temp,string);
                 System.out.println(string);

@@ -7,23 +7,9 @@
 import main.*;
 import analyzer.PosAnalyzer;
 import static analyzer.TextAnalyzer.POS_TAGGER_WORDS;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -43,9 +29,13 @@ public class Interface {
 
     //public static String configDir = "src/main/resources/config/";
     public static String configFileName = "prefix.prop";
+    public static String rulesFileName = "rules.prop";
+    
     public static String javaScriptFileName = "table.js";
 
+   
     private Map<String, String> prefixes = new TreeMap<String, String>();
+    private Map<String, String> pattern_rules = new TreeMap<String, String>();
 
     /*private static String createTable(List<String> rows, String prediction,String interestingness) {
          String kbTitle=getKB(prediction); 
@@ -102,7 +92,7 @@ public class Interface {
     }*/
     public static void main(String str[]) throws Exception {
         Logger LOGGER = Logger.getLogger(Interface.class.getName());
-        String prediction = "predict_po_for_s_given_localized_l", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
+        String prediction = "c_s,ll_s", interestingness = "Coherence", lexicalElement = "bear", parts_of_speech = "JJ";
         String stringAdd = "";
         Boolean flag = false;
 
@@ -110,14 +100,32 @@ public class Interface {
         interestingness = str[1];
         lexicalElement = str[2];
 
-        Map<String, String> prefixes = FileUtils.getHash(configDir + configFileName);
-        
+        Map<String, String> prefixes = FileUtils.getHash(configDir + configFileName,"=");
+        Map<String, String> pattern_rules = FileUtils.getHash(configDir + rulesFileName,"=>","=");
+    
         PosAnalyzer analyzer = new PosAnalyzer(lexicalElement, POS_TAGGER_WORDS, 5);
         CheckPosTag checkPosTag = new CheckPosTag(analyzer, lexicalElement);
-        if(!checkPosTag.getFound()){
+        if (checkPosTag.getFound()) {
+            parts_of_speech = checkPosTag.getPosTag();
+
+        } else {
             System.out.println("0");
-            return;  
+            return;
         }
+
+        checkPosTag.findRulePattern(pattern_rules, str[0]);
+        if (checkPosTag.getFound()) {
+            prediction = checkPosTag.getPrediction();
+            //System.out.println("prediction:"+prediction);
+        } else {
+
+            System.out.println("0");
+            return;
+        }
+
+
+        //System.out.println(pattern_rules.values());
+
           
         parts_of_speech=checkPosTag.getPosTag();
         //System.out.println(checkPosTag.getPosTag());
@@ -143,6 +151,9 @@ public class Interface {
 
         }
     }
+    
+  
+
 
     /*if (!rows.isEmpty()) {
                     stringAdd = createTable(rows, prediction, interestingness);

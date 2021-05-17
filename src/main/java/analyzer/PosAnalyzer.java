@@ -40,9 +40,10 @@ public class PosAnalyzer implements TextAnalyzer {
     private static MaxentTagger taggerModel = new MaxentTagger(stanfordModelFile);
     @JsonIgnore
     private Integer numberOfSentences = 0;
-     @JsonIgnore
-    private Boolean posTagFound = false;
     @JsonIgnore
+    private Boolean flag = false;
+    @JsonIgnore
+    
     private String fullPosTag = null;
     
     static {
@@ -85,22 +86,6 @@ public class PosAnalyzer implements TextAnalyzer {
         }
         return false;
     }
-
-
-   /* public String[] posTaggerText(String inputText) throws Exception {
-        BufferedReader reader = new BufferedReader(new StringReader(inputText));
-        List<List<HasWord>> sentences = MaxentTagger.tokenizeText(reader);
-        for (List<HasWord> sentence : sentences) {
-            List<TaggedWord> tSentence = taggerModel.tagSentence(sentence);
-            //System.out.println(tSentence);
-            String taggedText= getSentenceFromWordListTagged(tSentence);
-            String taggs=this.setTaggs(tSentence);
-            this.posTagFound=true;
-            this.fullPosTag=taggedText;
-            return new String[]{inputText, taggedText, taggs};
-        }
-        return null;
-    }*/
 
     private String getSentenceFromWordListTagged(List<TaggedWord> tSentence) {
         String str="";
@@ -173,46 +158,6 @@ public class PosAnalyzer implements TextAnalyzer {
         return fullPosTag;
     }
 
-    /*public List<HashMap<String, Set<String>>> getSenetences() {
-        return sentences;
-    }*/
-
-    /*public Map<String, Set<String>> getPosTaggers(Integer index) {
-        return sentencePosTags.get(index);
-    }
-
-    public Set<String> getAdjectives(Integer index) {
-        return sentencePosTags.get(index).get(TextAnalyzer.ADJECTIVE);
-    }
-
-    public Set<String> getNoun(Integer index) {
-        return sentencePosTags.get(index).get(TextAnalyzer.NOUN);
-    }
-
-    public Set<String> getWords(Integer index) {
-        return sentenceWords.get(index);
-    }
-
-    public String getDbpediaAbstract() {
-        return dbpediaAbstract.getText();
-    }*/
-
- /*@Override
-    public String toString() {
-        String str="";
-        for(Integer index=0;index<sentenceWords.size();index++){
-               String inputText=dbpediaAbstract.getText()+"\n"
-                      +this.sentencePosTags.get(index)+"\n"
-                      +this.sentenceWords.get(index)+"\n";
-               str+=inputText+"\n";
-        }
-       
-                           
-        return str;
-    }*/
-
-  
-
     public Set<String> getWords() {
         return words;
     }
@@ -234,7 +179,7 @@ public class PosAnalyzer implements TextAnalyzer {
     }
 
     public Boolean getPosTagFound() {
-        return posTagFound;
+        return flag;
     }
 
    
@@ -261,4 +206,5 @@ public class PosAnalyzer implements TextAnalyzer {
         return word.toLowerCase().trim().strip();
     }
 
+   
 }
