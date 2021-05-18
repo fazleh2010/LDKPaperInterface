@@ -82,15 +82,20 @@ public class Result {
         //String[] listOfFiles = folder.list();
         //System.out.println(outputDir+" prediction:"+prediction+" interestingness:"+interestingness);
         List<String> listOfFiles = FileUtils.getSpecificFiles(outputDir, prediction, interestingness);
+        System.out.println("files:"+listOfFiles);
+         System.out.println("outputDir:"+outputDir);
+         System.out.println("outputDir:"+interestingness);
         if (listOfFiles.isEmpty()) {
             return new TreeMap<String, List<String>>();
         }
 
         try {
             for (String fileName : listOfFiles) {
+                 System.out.println("fileName:"+fileName);
                 fileName = outputDir + fileName;
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
+                   System.out.println("command:"+command);
                 List<String> lines = new ArrayList<String>();
                 BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 while ((line = br.readLine()) != null) {
