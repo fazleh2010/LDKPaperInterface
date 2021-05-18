@@ -145,7 +145,7 @@ public class Interface {
                 Result result = new Result();
                 result.resultStr(outputDir, lexicalElement, parts_of_speech, prediction, interestingness, prefixes);
                 List<String> rows = result.getRows();
-                //System.out.println(result.getContent());
+                System.out.println(result.getContent());
 
             }
 
