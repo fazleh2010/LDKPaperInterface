@@ -95,18 +95,21 @@ public class Result {
                 fileName = outputDir + fileName;
                 String command = "grep -w " + lexicalElement + " " + fileName;
                 process = Runtime.getRuntime().exec(command);
-                   System.out.println("command:"+command);
+                System.out.println("command:"+command);
                 List<String> lines = new ArrayList<String>();
                 BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                Boolean flag=false;
                 while ((line = br.readLine()) != null) {
                     if (line.contains("XMLSchema#integer")) {
                         continue;
                     }
                     className = line.split(",")[4];
+                    flag=true;
                     lines.add(line);
 
                 }
-                classNameLines.put(className, lines);
+                if(flag)
+                   classNameLines.put(className, lines);
             }
 
             process.destroy();
