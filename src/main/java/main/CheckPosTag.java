@@ -44,6 +44,32 @@ public class CheckPosTag {
     }
 
     private void findPosTagFromTagger(String word) throws Exception {
+        
+         analyzer = new PosAnalyzer(word, POS_TAGGER_WORDS, 5);
+        if (!analyzer.getNouns().isEmpty()) {
+            this.posTag = PosAnalyzer.NOUN;
+              this.found = true;
+        } else if (!analyzer.getAdjectives().isEmpty()) {
+            this.posTag = PosAnalyzer.ADJECTIVE;
+              this.found = true;
+        } else if (!analyzer.getVerbs().isEmpty()) {
+            this.posTag = PosAnalyzer.VERB;
+              this.found = true;
+        } else {
+            this.posTag = PosAnalyzer.NOUN;
+              this.found = true;
+        }
+                
+        if(analyzer.posTaggerText(word)){
+        this.fullPosTag=analyzer.getFullPosTag();
+        /*System.out.println("word::" + word);
+        System.out.println("adjective::" + analyzer.getAdjectives());
+        System.out.println("noun::" + analyzer.getNouns());
+        System.out.println("verb::" + analyzer.getVerbs());
+        System.out.println("fullPosTag::" + fullPosTag);*/
+        }
+        this.word = word.trim().strip();
+         /* analyzer.posTaggerText(word);
 
         if (!analyzer.getNouns().isEmpty()) {
             this.posTag = PosAnalyzer.NOUN;
@@ -64,13 +90,13 @@ public class CheckPosTag {
 
         if (analyzer.posTaggerText(word)) {
             this.fullPosTag = analyzer.getFullPosTag();
-            /*System.out.println("word::" + word);
+        System.out.println("word::" + word);
         System.out.println("adjective::" + analyzer.getAdjectives());
         System.out.println("noun::" + analyzer.getNouns());
         System.out.println("verb::" + analyzer.getVerbs());
-        System.out.println("fullPosTag::" + fullPosTag);*/
+        System.out.println("fullPosTag::" + fullPosTag);
         }
-        this.word = word.trim().strip();
+        this.word = word.trim().strip();*/
     }
 
     public CheckPosTag(String outputDir, String prediction, String interestingness, String lexicalElement) throws IOException {

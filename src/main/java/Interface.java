@@ -107,7 +107,6 @@ public class Interface {
         CheckPosTag checkPosTag = new CheckPosTag(analyzer, lexicalElement);
         if (checkPosTag.getFound()) {
             parts_of_speech = checkPosTag.getPosTag();
-             System.out.println("parts_of_speech:"+parts_of_speech);
 
         } else {
             System.out.println("0");
@@ -137,7 +136,7 @@ public class Interface {
         //System.out.println("noun:" + noun.toString());
         //System.out.println("verb:" + verb.toString());
         //System.out.println(parts_of_speech);
-        //System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
+        System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else {

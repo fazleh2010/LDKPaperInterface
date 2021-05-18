@@ -59,10 +59,57 @@ public class PosAnalyzer implements TextAnalyzer {
 
     private String inputText = null;
 
-    public PosAnalyzer(String inputText, String analysisType, Integer numberOfSentences) throws Exception {
+      public PosAnalyzer(String inputText, String analysisType, Integer numberOfSentences) throws Exception {
         this.numberOfSentences = numberOfSentences;
-      
+        this.inputText = inputText;
+        BufferedReader reader = new BufferedReader(new StringReader(inputText));
+
+        if (analysisType.contains(POS_TAGGER_WORDS)) {
+            posTaggerWords(reader);
+        }
+        
     }
+      
+      private void posTaggerWords(BufferedReader reader) throws Exception {
+        Map<Integer, Map<String, Set<String>>> sentencePosTags = new HashMap<Integer, Map<String, Set<String>>>();
+        Map<Integer, Set<String>> sentenceWords = new HashMap<Integer, Set<String>>();
+
+        List<List<HasWord>> sentences = MaxentTagger.tokenizeText(reader);
+        //List<List<HasWord>> sentences = MaxentTagger.tokenizeText(new BufferedReader(new FileReader(inputText)));
+        Integer index = 0;
+        for (List<HasWord> sentence : sentences) {
+            index++;
+            Set<String> wordsofSentence = new HashSet<String>();
+            Map<String, Set<String>> posTaggers = new HashMap<String, Set<String>>();
+            List<TaggedWord> tSentence = taggerModel.tagSentence(sentence);
+            for (TaggedWord taggedWord : tSentence) {
+                String word = taggedWord.word();
+                word=this.modifyWord(word);
+                if(isStopWord(word)){
+                    continue;
+                }
+                if (taggedWord.tag().startsWith(TextAnalyzer.ADJECTIVE) 
+                        || taggedWord.tag().startsWith(TextAnalyzer.NOUN)
+                        || taggedWord.tag().startsWith(TextAnalyzer.VERB)) {
+                    posTaggers = this.populateValues(taggedWord.tag(), word, posTaggers);
+                }
+                wordsofSentence.add(word);
+            }
+            sentenceWords.put(index, wordsofSentence);
+            sentencePosTags.put(index, posTaggers);
+        }
+                
+        sentenwisePosSeperated(sentenceWords, sentencePosTags);
+    }
+ 
+    private boolean isStopWord(String word) {
+        word = word.trim().toLowerCase();
+        if (ENGLISH_STOPWORDS.contains(word)) {
+            return true;
+        }
+        return false;
+    }
+
     
      public PosAnalyzer(String analysisType, Integer numberOfSentences) throws Exception {
         this.numberOfSentences = numberOfSentences;
