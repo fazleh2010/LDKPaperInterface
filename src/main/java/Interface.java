@@ -136,7 +136,8 @@ public class Interface {
         //System.out.println("noun:" + noun.toString());
         //System.out.println("verb:" + verb.toString());
         //System.out.println(parts_of_speech);
-       System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
+       
+        System.out.println(prediction + " " + interestingness + " " + lexicalElement + " " + parts_of_speech);
         if (str.length < 3) {
             throw new Exception("less number of argument!!!");
         } else {
