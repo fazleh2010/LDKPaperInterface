@@ -156,7 +156,7 @@ public class Result {
 
             rankLine += addQuote(part_of_speech) + seperator + addQuote(rule);
             //System.out.println(rankLine);
-            rankLine = rankLine.replace("\"", "");
+            //rankLine = rankLine.replace("\"", "");
 
         }
         return rankLine;
