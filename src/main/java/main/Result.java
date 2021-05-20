@@ -154,6 +154,8 @@ public class Result {
             String rule = info[12].replace("&", ",").strip().trim();
             
             if (object.contains("@")) {
+                object=removeFirstandLast(object);
+                rule=removeFirstandLast(rule);
                 System.out.println("object::" + object);
                 System.out.println("rule::" + rule);
 
@@ -165,6 +167,23 @@ public class Result {
 
         }
         return rankLine;
+    }
+    
+    private static  String removeFirstandLast(String str) {
+        /*String info[]=str.split("@");
+        String label=info[0];
+        String lang=info[1];*/
+
+        if(str!=null&&str.length()>4){
+           str = str.substring(1, str.length() - 1);
+           str = str.replace("\"", "$"); 
+        }
+        else if(str.length()<4){
+           String info[]=str.split("@");
+            String label=info[0].replace("\"", "$");
+            String lang=info[1];
+        }
+        return str;
     }
 
     private static String formatPosTag(String string) {
