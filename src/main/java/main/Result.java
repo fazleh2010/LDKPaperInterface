@@ -176,11 +176,11 @@ public class Result {
            str = str.substring(1, str.length() - 1);
            str = str.replace("\"", "$"); 
         }
-        else if(str.length()<4){
+        /*else if(str.length()<4){
            String info[]=str.split("@");
             String label=info[0].replace("\"", "$");
             String lang=info[1];
-        }
+        }*/
         return str;
     }
 
