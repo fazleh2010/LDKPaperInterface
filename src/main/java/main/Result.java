@@ -39,13 +39,13 @@ public class Result {
             flag = true;
             List<String> LineInfos = lexiconDic.get(key);
             for (String lineinfo : LineInfos) {
-                System.out.println("lineinfo::" + lineinfo);
+                //System.out.println("lineinfo::" + lineinfo);
                  Double value = 0.0;
                 try {
                     String doubleValue = lineinfo.split("\"" + ",")[2];
-                    System.out.println("double String::" + doubleValue);
+                    //System.out.println("double String::" + doubleValue);
                     doubleValue = doubleValue.replace("\"", "");
-                    System.out.println("After double quote::" + doubleValue);
+                    //System.out.println("After double quote::" + doubleValue);
                     value = Double.parseDouble(doubleValue);
                 } catch (NumberFormatException ex) {
                     continue;
