@@ -40,7 +40,9 @@ public class Result {
             List<String> LineInfos = lexiconDic.get(key);
             for (String lineinfo : LineInfos) {
                 String doubleValue = lineinfo.split(",")[2];
+                System.out.println("double String::"+doubleValue);
                 doubleValue = doubleValue.replace("\"", "");
+                                System.out.println("After double quote::"+doubleValue);
                 Double value = Double.parseDouble(doubleValue);
                 Set<String> tempList = new HashSet<String>();
                 if (sortedLines.containsKey(value)) {
