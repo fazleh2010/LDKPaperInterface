@@ -39,12 +39,18 @@ public class Result {
             flag = true;
             List<String> LineInfos = lexiconDic.get(key);
             for (String lineinfo : LineInfos) {
-                  System.out.println("lineinfo::"+lineinfo);
-                String doubleValue = lineinfo.split("\""+",")[2];
-                System.out.println("double String::"+doubleValue);
-                doubleValue = doubleValue.replace("\"", "");
-                                System.out.println("After double quote::"+doubleValue);
-                Double value = Double.parseDouble(doubleValue);
+                System.out.println("lineinfo::" + lineinfo);
+                 Double value = 0.0;
+                try {
+                    String doubleValue = lineinfo.split("\"" + ",")[2];
+                    System.out.println("double String::" + doubleValue);
+                    doubleValue = doubleValue.replace("\"", "");
+                    System.out.println("After double quote::" + doubleValue);
+                    value = Double.parseDouble(doubleValue);
+                } catch (NumberFormatException ex) {
+                    continue;
+                }
+
                 Set<String> tempList = new HashSet<String>();
                 if (sortedLines.containsKey(value)) {
                     tempList = sortedLines.get(value);
