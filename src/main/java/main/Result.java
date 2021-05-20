@@ -152,8 +152,13 @@ public class Result {
             }
             String part_of_speech = formatPosTag(info[11]).strip().trim();
             String rule = info[12].replace("&", ",").strip().trim();
-            //System.out.println("rule::"+rule);
+            
+            if (object.contains("@")) {
+                System.out.println("object::" + object);
+                System.out.println("rule::" + rule);
 
+            }
+               
             rankLine += addQuote(part_of_speech) + seperator + addQuote(rule);
             //System.out.println(rankLine);
             rankLine = rankLine.replace("\"", "");
