@@ -154,8 +154,8 @@ public class Result {
             String rule = info[12].replace("&", ",").strip().trim();
             
             if (object.contains("@")) {
-                object=removeFirstandLast(object);
-                rule=removeFirstandLast(rule);
+                object=removeFirstandLastRule(object);
+                rule=removeFirstandLastRule(rule);
                 System.out.println("object::" + object);
                 System.out.println("rule::" + rule);
 
@@ -169,12 +169,30 @@ public class Result {
         return rankLine;
     }
     
-    private static  String removeFirstandLast(String str) {
+    private static  String removeFirstandLastRule(String str) {
         
 
         if(str!=null&&str.length()>4){
            str = str.substring(1, str.length() - 1);
            str = str.replace("\"", "$"); 
+           str=str.replace("$$", "$");
+           return str;
+        }
+        /*else if(str.length()<4){
+           String info[]=str.split("@");
+            String label=info[0].replace("\"", "$");
+            String lang=info[1];
+        }*/
+        return str;
+    }
+    
+    private static  String removeFirstandLastObject(String str) {
+        
+         if (str.contains("@")) {
+            String info[] = str.split("@");
+            String label = info[0].replace("\"", "$");
+            String lang = info[1];
+            return label+"@"+lang;
         }
         /*else if(str.length()<4){
            String info[]=str.split("@");
