@@ -158,7 +158,7 @@ public class Result {
             
             if (rule.contains("@")) {
                 rule=removeFirstandLastRule(rule);
-                System.out.println("rule::" + rule);
+                //System.out.println("rule::" + rule);
 
             }
                
