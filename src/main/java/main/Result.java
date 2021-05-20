@@ -170,9 +170,7 @@ public class Result {
     }
     
     private static  String removeFirstandLast(String str) {
-        /*String info[]=str.split("@");
-        String label=info[0];
-        String lang=info[1];*/
+        
 
         if(str!=null&&str.length()>4){
            str = str.substring(1, str.length() - 1);
