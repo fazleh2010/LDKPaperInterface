@@ -99,7 +99,7 @@ public class Result {
             for (String fileName : listOfFiles) {
                 fileName = outputDir + fileName;
                 String command = "grep -w " + lexicalElement + " " + fileName;
-                System.out.println("fileName::"+fileName);
+                //System.out.println("fileName::"+fileName);
                 process = Runtime.getRuntime().exec(command);
                 List<String> lines = new ArrayList<String>();
                 BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
