@@ -139,6 +139,9 @@ public class Result {
             object = checkInvalid(object, 10);
             
             String className="dbo:"+info[4].replace(" ", "");
+            if (object.contains("@")) {
+                object=removeFirstandLastRule(object);
+            }
 
             rankLine = addQuote(checkLabel(getValue(subject))) + seperator
                     + addQuote(checkLabel(getValue(predicate))) + seperator
@@ -153,10 +156,8 @@ public class Result {
             String part_of_speech = formatPosTag(info[11]).strip().trim();
             String rule = info[12].replace("&", ",").strip().trim();
             
-            if (object.contains("@")) {
-                object=removeFirstandLastRule(object);
+            if (rule.contains("@")) {
                 rule=removeFirstandLastRule(rule);
-                System.out.println("object::" + object);
                 System.out.println("rule::" + rule);
 
             }
