@@ -40,7 +40,7 @@ public class Result {
             List<String> LineInfos = lexiconDic.get(key);
             for (String lineinfo : LineInfos) {
                   System.out.println("lineinfo::"+lineinfo);
-                String doubleValue = lineinfo.split(",")[2];
+                String doubleValue = lineinfo.split("\""+",")[2];
                 System.out.println("double String::"+doubleValue);
                 doubleValue = doubleValue.replace("\"", "");
                                 System.out.println("After double quote::"+doubleValue);
