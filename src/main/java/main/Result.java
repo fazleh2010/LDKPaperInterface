@@ -39,6 +39,7 @@ public class Result {
             flag = true;
             List<String> LineInfos = lexiconDic.get(key);
             for (String lineinfo : LineInfos) {
+                  System.out.println("lineinfo::"+lineinfo);
                 String doubleValue = lineinfo.split(",")[2];
                 System.out.println("double String::"+doubleValue);
                 doubleValue = doubleValue.replace("\"", "");
