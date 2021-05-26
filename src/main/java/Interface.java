@@ -96,7 +96,7 @@ public class Interface {
         String stringAdd = "";
         Boolean flag = false;
 
-        prediction = str[0];
+        prediction = str[0]+"-";
         interestingness = str[1];
         lexicalElement = str[2];
 
