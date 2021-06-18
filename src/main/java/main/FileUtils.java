@@ -86,6 +86,7 @@ public class FileUtils {
         Map<String, String> tempHash = new TreeMap<String, String>();
         BufferedReader reader;
         String line = "";
+              System.out.println("Now the output is redirected!"+fileName);
         try {
             reader = new BufferedReader(new FileReader(fileName));
             line = reader.readLine();

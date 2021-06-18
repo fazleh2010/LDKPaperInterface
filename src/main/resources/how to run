@@ -1,0 +1,2 @@
+$command =$javaCommand.$space.$dir.$jarFile.$space.$rule.$space.$inter.$space.$tokenStr;ls
+java -jar target/Interface.jar predict_po_for_s_given_localized_l Cosine "australian"     
